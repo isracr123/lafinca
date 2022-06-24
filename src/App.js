@@ -1,24 +1,29 @@
-import logo from './logo.svg';
 import './App.css';
+import Pos from './components/Pos'
+import CreateCategory from './components/CreateCategory'
+import CreateProduct from './components/CreateProduct'
+import EditCategory from './components/EditCategory';
+import EditProducts from './components/EditProducts';
+import Receipt from './components/Receipt';
+
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+} from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/pos" element={<Pos />}/>
+        <Route path="/pos/createcategory" element={<CreateCategory />}/>
+        <Route path="/pos/editcategory/:id" element={<EditCategory />}/>
+        <Route path="/pos/createproduct" element={<CreateProduct />}/>
+        <Route path="/pos/editproduct/:id" element={<EditProducts />}/>
+        <Route path="/pos/receipt" element={<Receipt />}/>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
