@@ -11,11 +11,28 @@ const Receipt = () => {
     const [totalData, setTotalData] = useState([]);
     const date = new Date();
 
+    /*Ticket Data */
+    const [qty, setQty] = useState('');
+    const [products, setProducts] = useState('');
+    const [price, setPrice] = useState('');
+    const [subtotal, setSubtotal] = useState('');
+    const [total, setTotal] = useState('');
+    const [pay, setPay] = useState('');
+    const [change, setChange] = useState('');
+
+    /*Print */
+    const [name, setName] = useState('');
+    const [table, setTable] = useState(0);
+
     useEffect(() => {
         getCartData();
         getTotalData();
         console.log('cart and total data twice');
       }, []);
+
+      useEffect(() => {
+        dataTickets();
+      }, [table]);
 
     /*Print */
     const componentRef = useRef();
@@ -40,6 +57,46 @@ const Receipt = () => {
         await axios.delete('http://localhost:4000/api/total/' + id);
     }
 
+    /*Create tickets*/
+    const createTickets = (id) => {
+        if (table === 0 || name === ''){
+            alert('Completar todos los campos');
+        }else{
+            axios.post('http://localhost:4000/api/tickets', {
+                date: date,
+                waiter: name,
+                table: table,
+                qty: qty,
+                products: products,
+                price: price,
+                subtotal: subtotal,
+                total: total,
+                pay: pay,
+                change: change,
+            });
+            window.location.href='http://localhost:3000/pos/';
+            deleteTotal(id);
+        }
+    }
+
+    /*Take data to create tickets */
+    const dataTickets = () => {
+        const qtyTicket = cart && cart.map((a) => (a.sum));
+        setQty(qtyTicket);
+        const productsTicket = cart && cart.map((a) => (a.product));
+        setProducts(productsTicket);
+        const priceTicket = cart && cart.map((a) => (a.price));
+        setPrice(priceTicket);
+        const subtotalTicket = cart && cart.map((a) => (a.sum*a.price));
+        setSubtotal(subtotalTicket);
+        const totalTicket = totalData && totalData.map((t) => (t.total));
+        setTotal(totalTicket[0]);
+        const payTicket = totalData && totalData.map((t) => (t.pay));
+        setPay(payTicket[0]);
+        const changeTicket = totalData && totalData.map((t) => (t.change));
+        setChange(changeTicket[0]);
+    }
+
   return (
     <div className='fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-24 overflow-y-scroll'>
         <div className='fixed bg-black w-full h-screen left-0 top-0 z-0 '>
@@ -49,7 +106,7 @@ const Receipt = () => {
             <div>
             {totalData && totalData.map(t =><div key={t._id + 1}>
                 <div className='text-center'>   
-                    <h2 className='class="text-xl font-semibold my-3'>PUNTO DE VENTA</h2>
+                    <h2 className='text-xl font-semibold my-3'>PUNTO DE VENTA</h2>
                     <p>LA FINCA</p>
                 </div>
                 <div className='flex mt-4 text-xs'>
@@ -57,6 +114,10 @@ const Receipt = () => {
                         No: {t._id}
                     </div>
                     <div><Moment format='MMMM Do YYYY, h:mm:ss a'>{date}</Moment></div>
+                </div>
+                <div className='flex-grow text-xs'>
+                        Mesero: <input placeholder='Nombre' onChange={event => setName(event.target.value)}/>
+                        Mesa #<input placeholder='0' onChange={event => setTable(event.target.value)} className='w-10'/>
                 </div>
                 </div>)}
                 <div className='w-full border-t border-gray-300 my-2'></div>
@@ -109,11 +170,9 @@ const Receipt = () => {
                 }}>
                 X Cerrar
                 </button>
-                
                 <button className='w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700'
                 onClick={()=>{
-                    const function1 = window.location.href='http://localhost:3000/pos/';
-                    const function2 = deleteTotal(t._id);
+                    const function1 = createTickets(t._id);
                 }}>
                     GUARDAR
                 </button>
