@@ -5,6 +5,7 @@ import CreateProduct from './components/CreateProduct'
 import EditCategory from './components/EditCategory';
 import EditProducts from './components/EditProducts';
 import Receipt from './components/Receipt';
+import TicketsPOS from './components/TicketsPOS';
 
 import {
   BrowserRouter,
@@ -22,6 +23,7 @@ function App() {
         <Route path="/pos/createproduct" element={<CreateProduct />}/>
         <Route path="/pos/editproduct/:id" element={<EditProducts />}/>
         <Route path="/pos/receipt" element={<Receipt />}/>
+        <Route path="/pos/tickets" element={<TicketsPOS />}/>
       </Routes>
     </BrowserRouter>
   );

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {LogoutIcon,CalculatorIcon, ClipboardListIcon, InformationCircleIcon} from '@heroicons/react/outline'
+import {LogoutIcon,HomeIcon, ClipboardListIcon, InformationCircleIcon} from '@heroicons/react/outline'
 
 export default class LeftSide extends Component {
   render() {
@@ -11,16 +11,16 @@ export default class LeftSide extends Component {
           </a>
           <ul className='flex flex-row md:flex-col space-x-2 md:space-x-0 md:space-y-2 ml-12 md:ml-0 md:mt-12'>
               <li>
-                  <a className='flex items-center'>
+                  <a className='flex items-center' href="http://localhost:3000/pos/">
                       <span className='flex items-center justify-center h-12 w-12 rounded-2xl bg-yellow-300 shadow-lg text-white hover:bg-yellow-400 active:bg-yellow-300' >
-                          <CalculatorIcon className='h-10 w-6 text-white cursor-pointer'/>
+                          <HomeIcon className='h-10 w-6 text-white cursor-pointer'/>
                       </span>
                   </a>
               </li>
               <li>
-                  <a className='flex items-center'>
+                  <a className='flex items-center' href="http://localhost:3000/pos/tickets">
                       <span className='flex items-center justify-center text-yellow-100 hover:bg-yellow-400 h-12 w-12 rounded-2xl'>
-                          <ClipboardListIcon className='h-10 w-6 text-white cursor-pointer' />
+                          <ClipboardListIcon className='h-10 w-6 text-white cursor-pointer'/>
                       </span>
                   </a>
               </li>
