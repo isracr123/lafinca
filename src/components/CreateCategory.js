@@ -9,9 +9,15 @@ const CreateCategory = () => {
 
   /*Add Categories*/
   const Functions = () => {
-    axios.post('http://localhost:4000/api/categories', {
-      category: createCategory,
-    })
+    if (createCategory === null){
+        alert('Llena todos los campos');
+    }else{
+        axios.post('http://localhost:4000/api/categories', {
+            category: createCategory,
+        });
+        window.location.href = 'http://localhost:3000/pos/';
+    }
+    
   }
 
   return (
@@ -44,12 +50,10 @@ const CreateCategory = () => {
             <div className="md:flex md:items-center">
                 <div className="md:w-1/3"></div>
                 <div className="md:w-2/3">
-                <a href="http://localhost:3000/pos/">
                 <button className="shadow bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"
                 onClick={Functions}>
                         Agregar 
                 </button>
-                </a>
                 </div>
             </div>
         </form> 

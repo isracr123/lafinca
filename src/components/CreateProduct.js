@@ -5,12 +5,12 @@ import axios from 'axios'
 
  const CreateProduct = () => {
 
-    const [category, setCategory] = useState(null);
-    const [categoryPro, setCategoryPro] = useState(null);
-    const [pricePro, setPricePro]= useState(null);
-    const [productPro, setProductPro] = useState(null);
-    const [qtyPro, setQtyPro] =  useState(null);
-    const [unitsPro, setUnitsPro] = useState(null);
+    const [category, setCategory] = useState('');
+    const [categoryPro, setCategoryPro] = useState('');
+    const [pricePro, setPricePro]= useState(0);
+    const [productPro, setProductPro] = useState('');
+    const [qtyPro, setQtyPro] =  useState(0);
+    const [unitsPro, setUnitsPro] = useState('');
 
     useEffect(() => {
         getCategoriesData();
@@ -25,13 +25,14 @@ import axios from 'axios'
     /*Add Products*/
     const addProduct = () => {
         axios.post('http://localhost:4000/api/products', {
-            category: categoryPro,
-            price: pricePro,
-            product: productPro, 
-            quantity: qtyPro,
-            units: unitsPro,
-        })
-      }
+                category: categoryPro,
+                price: pricePro,
+                product: productPro, 
+                quantity: qtyPro,
+                units: unitsPro,
+        });
+        window.location.href = 'http://localhost:3000/pos/';
+    }
 
 
 
@@ -141,12 +142,10 @@ import axios from 'axios'
             <div className="md:flex md:items-center">
                 <div className="md:w-1/3"></div>
                 <div className="md:w-2/3">
-                    <a href="http://localhost:3000/pos/">
                     <button className="shadow bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"
                     onClick={addProduct}>
                     Agregar
                     </button>
-                    </a>
                 </div>
             </div>
         </form> 

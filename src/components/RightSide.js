@@ -8,6 +8,8 @@ const RightSide = (props) => {
 
   const [cart, setCart] = useState([]);
   const [total, setTotal] = useState(0);
+  const [totalId, setTotalId] = useState(0);
+  const [totalLength, setTotalLength] = useState(0);
   const [updateTotal, setUpdateTotal] = useState(false);
 
   /*Pago*/
@@ -17,6 +19,10 @@ const RightSide = (props) => {
   /*Cambio */
 
   const [cambio, setCambio] = useState(0);
+
+  useEffect(() => {
+    getTotalData();
+  }, []);
 
   useEffect(() => {
     const cambio2 = pago - total;
@@ -42,14 +48,39 @@ const RightSide = (props) => {
     const a = await axios.get('http://localhost:4000/api/cart');
     setCart(a.data);
   }
+
+  /*Get Total*/
+  const getTotalData = async () => {
+    const t = await axios.get('http://localhost:4000/api/total');
+    const data = t.data;
+    if (data === 0){
+      setTotalId(t.data[0]._id);
+    }else{
+      console.log('data:' + data);
+    }
+    setTotalLength(t.data.length);
+  }
   
   /*Create Total*/
   const addTotal = () => {
-    axios.post('http://localhost:4000/api/total', {
+    if (totalLength === 0){
+      axios.post('http://localhost:4000/api/total', {
         total: total,
         pay: pago,
         change: cambio, 
-    })
+      })
+    }else{
+      newTotal(totalId);
+    }
+  }
+
+  /*Update Total*/
+  const newTotal = async (id) => {
+    await axios.put('http://localhost:4000/api/total/' + id, {
+      total: total,
+      pay: pago,
+      change: cambio, 
+    });
   }
 
   /*Total Function */
