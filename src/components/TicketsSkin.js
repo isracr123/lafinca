@@ -1,6 +1,8 @@
 import React from 'react'
 import {useState, useEffect} from 'react'
 import axios from 'axios'
+import Moment from 'react-moment'   
+
 
 const TicketsSkin = () => {
 
@@ -29,7 +31,7 @@ const TicketsSkin = () => {
           <div className='flex-grow text-xs'>
             <p>Mesero: {t.waiter}</p>
             <p>Mesa #{t.table}</p>
-            <div>{t.date}</div>
+            <div><Moment format='MMMM Do YYYY, h:mm:ss a'>{t.date}</Moment></div>
           </div>
           <table className='w-full text-xs'>
             <thead>

@@ -1,23 +1,40 @@
 import React from 'react'
 import axios from 'axios'
 import { XIcon, PhotographIcon } from '@heroicons/react/outline'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const CreateCategory = () => {
 
-  const [createCategory, setCreateCategory] = useState(null);
+  const [createCategory, setCreateCategory] = useState('');
+  const [getCategories, setGetCategories] = useState('');
+
+  useEffect(() => {
+    getCategoriesData();
+  }, []); 
+
+  /*Get Categories*/
+  const getCategoriesData = async () => {
+    const a = await axios.get('http://localhost:4000/api/categories');
+    setGetCategories(a.data);
+  } 
 
   /*Add Categories*/
   const Functions = () => {
-    if (createCategory === null){
+    if (createCategory === ''){
         alert('Llena todos los campos');
-    }else{
-        axios.post('http://localhost:4000/api/categories', {
+    }else if (getCategories != ''){
+        const array = getCategories && getCategories.map((a) => (a.category));
+        /*Compare if the value is repeated in categories*/
+        const filteredArray = array.filter(array => array===createCategory);
+        if (filteredArray.length > 0){
+            alert('Categoria Repetida | Elige otro nombre');
+        } else{
+            axios.post('http://localhost:4000/api/categories', {
             category: createCategory,
-        });
-        window.location.href = 'http://localhost:3000/pos/';
+            });
+            window.location.href = 'http://localhost:3000/pos/';
+        }
     }
-    
   }
 
   return (
