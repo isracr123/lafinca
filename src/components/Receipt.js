@@ -57,6 +57,11 @@ const Receipt = () => {
         await axios.delete('http://localhost:4000/api/total/' + id);
     }
 
+    /*Delete All Cart*/
+    const deleteAllCart = async () => {
+        await axios.delete('http://localhost:4000/api/cart/');
+    }
+
     /*Create tickets*/
     const createTickets = (id) => {
         if (table === 0 || name === ''){
@@ -76,6 +81,7 @@ const Receipt = () => {
             });
             window.location.href='http://localhost:3000/pos/';
             deleteTotal(id);
+            deleteAllCart();
         }
     }
 
