@@ -22,7 +22,7 @@ const TicketsSkin = () => {
 
   return (
     <div className=' w-full min-h-full left-0 top-0 z-10 flex flex-wrap p-5 md:space-x-5 space-y-5 md:space-y-0'>
-      <div className='grid grid-cols-1 sm:grid-cols-3 md:grid-cols-5 space-x-2 space-y-2'>
+      <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 space-x-2 space-y-2 w-full'>
       {tickets && tickets.map(t  => 
       <div className='w-70 h-80 rounded-3xl bg-white shadow-xl overflow-hidden z-10 overflow-y-scroll scroll-smooth' key={t._id}>
         <div className='text-left w-full text-sm p-6'>
@@ -40,7 +40,7 @@ const TicketsSkin = () => {
                 <th className='py-1 w-1/12 text-center'>#</th>
                 <th className='py-1 text-left'>Producto</th>
                 <th className='py-1 w-2/12 text-center'>Precio</th>
-                <th className='py-1 w-3/12 text-right'>Subtotal</th>
+                <th className='py-1 px-2 w-1/12 text-right'>Subtotal</th>
               </tr>
               </thead>
               <tbody className='flex-row'>
@@ -50,7 +50,7 @@ const TicketsSkin = () => {
                       <tbody>
                         {t.qty.map((a, key)=>
                         <tr key={key}>
-                          <td className='py-1 text-center flex-col'>{a}</td>
+                          <td className='py-1 px-4 text-center flex-col'>{a}</td>
                         </tr>)}
                       </tbody>
                     </table>
@@ -70,7 +70,7 @@ const TicketsSkin = () => {
                       <tbody>
                         {t.price.map((c, key)=>
                         <tr key={key}>
-                          <td className='py-1 text-center'>${c}</td>
+                          <td className='py-1 px-4 text-center'>${c}</td>
                         </tr>)}
                       </tbody>
                     </table>
@@ -80,7 +80,7 @@ const TicketsSkin = () => {
                       <tbody>
                         {t.subtotal.map((d, key)=>
                         <tr key={key}>
-                          <td className='py-1 text-right'>${d}</td>
+                          <td className='py-1 px-9 text-right'>${d}</td>
                         </tr>)}
                       </tbody>
                     </table>

@@ -195,14 +195,14 @@ const EditTicket = () => {
             <div className='flex font-semibold'>
                 <div className='flex-grow'>TOTAL</div>
                 <div className='grid grid-cols-2'>
-                    <p>$</p>
+                    <p className='px-5'>$</p>
                     <input className='w-12' onChange={event => setTotal(event.target.value)} defaultValue={oneTicket.total}/>
                 </div>
             </div>
             <div className='flex text-xs font-semibold'>
                 <div className='flex-grow'>Pago</div>
                 <div className='grid grid-cols-2'>
-                    <p>$</p>
+                    <p className='px-5'>$</p>
                     <input className='w-12' onChange={event => setPay(event.target.value)} defaultValue={oneTicket.pay}/>
                 </div>
             </div>
@@ -210,7 +210,7 @@ const EditTicket = () => {
             <div className='flex text-xs font-semibold'>
                 <div className='flex-grow'>Cambio</div>
                 <div className='grid grid-cols-2'>
-                    <p>$</p>
+                    <p className='px-5'>$</p>
                     <input className='w-12' onChange={event => setChange(event.target.value)} defaultValue={oneTicket.change}/>
                 </div>
             </div>
