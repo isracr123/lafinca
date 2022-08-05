@@ -8,6 +8,7 @@ import Receipt from './components/Receipt';
 import TicketsPOS from './components/TicketsPOS';
 import EditTicket from './components/EditTicket';
 import Waiter from './components/Waiter';
+import WaiterEdit from './components/WaiterEdit';
 
 import {
   BrowserRouter,
@@ -28,6 +29,7 @@ function App() {
         <Route path="/pos/tickets" element={<TicketsPOS />}/>
         <Route path="/pos/edittickets/:id" element={<EditTicket />}/>
         <Route path="/waiter" element={<Waiter />}/>
+        <Route path="/editwaiter/:id" element={<WaiterEdit />}/>
       </Routes>
     </BrowserRouter>
   );

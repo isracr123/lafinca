@@ -4,12 +4,14 @@ import {useState, useEffect} from 'react'
 import { PlusIcon, MinusIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import Autocomplete from 'react-autocomplete';
+import {Link} from 'react-router-dom';
 console.warn = () => {}
 
 const EditTicket = () => {
 
   useEffect(() => {
     getProductsData();
+    getWaiters();
   }, []);
 
   const date = new Date();
@@ -19,11 +21,14 @@ const EditTicket = () => {
   const [table, setTable] = useState();
   const [qty, setQty] = useState(1);
   const [products, setProducts] = useState();
-  const [price, setPrice] = useState();
-  const [subtotal, setSubtotal] = useState();
+  const [price, setPrice] = useState(0);
+  const [subtotal, setSubtotal] = useState(0);
   const [total, setTotal] = useState();
   const [pay, setPay] = useState();
   const [change, setChange] = useState();
+
+  /*Waiter */
+  const [waiter, setWaiter] = useState('');
 
   /*Filter */
   const [value, setValue] = useState('');
@@ -37,6 +42,12 @@ const EditTicket = () => {
     setProducts(p.data);
   } 
 
+  /*Get Waiters*/
+  const getWaiters = async () => {
+    const w = await axios.get('http://localhost:4000/api/waiter');
+    setWaiter(w.data);
+  } 
+
   /*Filter price */
   const filterPrice = (product) => {
     const array = products.filter((item) => item.product.toLowerCase().includes(product.toLowerCase()));
@@ -46,8 +57,11 @@ const EditTicket = () => {
 
   /*Sum products*/
   const sumProducts = () => {
-    setQty(qty+1);
-    setSubtotal(price*(qty+1));
+    if (qty >= 0) {
+        setQty(qty+1);
+        setSubtotal(price*(qty+1));
+    }else{
+    }
   }
 
   /*Rest Products*/
@@ -56,7 +70,26 @@ const EditTicket = () => {
         setQty(qty-1);
         setSubtotal(price*(qty-1));
     }else{
+    }
+  }
 
+  /*Create Waiter data*/
+  const createWaiter = () => {
+    axios.post('http://localhost:4000/api/waiter', {
+                qty: qty,
+                products: value,
+                price: price, 
+                subtotal: subtotal,
+    });
+    getWaiters();
+  }
+  
+  /*Plus button Functionality*/
+  const plusButton = () => {
+    if (start === false){
+        setStart(true);
+    }else{
+        createWaiter();
     }
   }
 
@@ -95,17 +128,78 @@ const EditTicket = () => {
                         </tr>
                     </thead>
                     <tbody className='flex-row'>
+                        {waiter && waiter.map(w => 
+                        <tr key={w._id}>
+                            <td>
+                                <table className='mx-5'>
+                                    <tbody>
+                                        <tr>
+                                            <td className='py-1 text-center flex-col'>
+                                                <p className='w-5 border-2 border-black'>
+                                                    {w.qty}
+                                                </p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td >
+                                <table>
+                                    <tbody>
+                                        <tr className='overflow-visible	w-1'>
+                                            <td className='py-1 text-left'>
+                                                <Link to={"/editwaiter/" + w._id}>
+                                                    <p>{w.products}</p>
+                                                </Link>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>
+                                <table className='mx-5'>
+                                    <tbody>
+                                        <tr>
+                                            <td className='py-1 text-center'>
+                                                <div className='grid grid-cols-2 space-x-2'>
+                                                    <p>$</p> 
+                                                    <p className='w-7 border-2 border-black'>
+                                                        {w.price}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                            <td>
+                                <table className='mx-6 '>
+                                    <tbody>
+                                        <tr>
+                                            <td className='py-1 text-center'>
+                                                <div className='grid grid-cols-2 space-x-2'>
+                                                    <p>$</p> 
+                                                    <p className='w-7 border-2 border-black'>
+                                                        {w.subtotal}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>)}
                         <tr>
                             <td>
                                 <table className='mx-5'>
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-center flex-col'>
-                                                <button className="absolute left-3 md:left-96 bg-rose-500 text-white active:bg-rose-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                <button className="absolute left-3 md:left-96 bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                 onClick={() => {sumProducts()}}>
                                                     <PlusIcon className="h-2 w-2 text-white"/>
                                                 </button>
-                                                <button className="absolute top-[320px] left-3 md:left-96 md:top-[368px] bg-rose-500 text-white active:bg-rose-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                <button className="absolute top-[320px] left-3 md:left-96 md:top-[368px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                 onClick={() => {restProducts()}}>
                                                     <MinusIcon className="h-2 w-2 text-white"/>
                                                 </button>
@@ -125,7 +219,7 @@ const EditTicket = () => {
                                                 {start ? 
                                                     <Autocomplete
                                                         getItemValue={(item) => item.product}
-                                                        items={products.filter((item) => item.product.toLowerCase().includes(value.toLowerCase()))}
+                                                        items={products && products.filter((item) => item.product.toLowerCase().includes(value.toLowerCase()))}
                                                         renderItem={(item, isHighlighted) =>
                                                             <div key={item.product} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
                                                             {item.product}
@@ -183,9 +277,9 @@ const EditTicket = () => {
                 </table>
             </div>
             <div className='relative left-72 top-1'>
-              <button type="button" className=" text-green-700 border border-green-700 hover:bg-green-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:focus:ring-green-800"
-              onClick={() => setStart(true)}>
-                  <PlusIcon className="h-5 w-5 text-green-500"/>
+              <button type="button" className=" text-yellow-700 border border-yellow-700 hover:bg-yellow-700 hover:text-white focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-full text-sm p-2.5 text-center inline-flex items-center dark:border-yellow-500 dark:text-yellow-500 dark:hover:text-white dark:focus:ring-yellow-800"
+              onClick={() => {plusButton()}}>
+                  <PlusIcon className="h-5 w-5 text-yellow-500"/>
               </button>
             </div>
             <div className='w-full border-t border-gray-300 my-2'></div>
