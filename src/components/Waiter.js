@@ -17,15 +17,15 @@ const EditTicket = () => {
   const date = new Date();
   
   /* Variables*/
-  const [name, setName] = useState();
-  const [table, setTable] = useState();
+  const [name, setName] = useState('Nombre');
+  const [table, setTable] = useState(1);
   const [qty, setQty] = useState(1);
-  const [products, setProducts] = useState();
+  const [products, setProducts] = useState('');
   const [price, setPrice] = useState(0);
   const [subtotal, setSubtotal] = useState(0);
-  const [total, setTotal] = useState();
-  const [pay, setPay] = useState();
-  const [change, setChange] = useState();
+  const [total, setTotal] = useState(0);
+  const [pay, setPay] = useState(0);
+  const [change, setChange] = useState(0);
 
   /*Waiter */
   const [waiter, setWaiter] = useState('');
@@ -93,6 +93,19 @@ const EditTicket = () => {
     }
   }
 
+  /*Create Kitchen Data*/
+  const createKitchen = () => {
+    axios.post('http://localhost:4000/api/kitchen', {
+        date: date,
+        waiter: name,
+        table: table, 
+        products: waiter,
+        total: total,
+        pay: pay, 
+        change: change,
+    });
+  }
+
   return (
     <div className='fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-1 overflow-y-scroll'>
     <div className='w-96 rounded-3xl bg-white shadow-xl overflow-hidden z-10 '>
@@ -112,8 +125,8 @@ const EditTicket = () => {
                 </div>
             </div>
             <div className='flex-grow text-xs'>
-                   Mesero: <input className="border-2 border-black" onChange={event => setName(event.target.value)} defaultValue="nombre"/>
-                    Mesa #<input className="w-10 border-2 border-black" onChange={event => setTable(event.target.value)} defaultValue="1"/>
+                   Mesero: <input className="border-2 border-black" onChange={event => setName(event.target.value)} defaultValue={name}/>
+                    Mesa #<input className="w-10 border-2 border-black" onChange={event => setTable(event.target.value)} defaultValue={table}/>
             </div>
             </div>
             <div className='w-full border-t border-gray-300 my-2'></div>
@@ -195,11 +208,11 @@ const EditTicket = () => {
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-center flex-col'>
-                                                <button className="absolute left-3 md:left-96 bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                <button className="absolute left-3 md:left-[580px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                 onClick={() => {sumProducts()}}>
                                                     <PlusIcon className="h-2 w-2 text-white"/>
                                                 </button>
-                                                <button className="absolute top-[320px] left-3 md:left-96 md:top-[368px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                <button className="absolute top-[320px] left-3 md:left-[580px] md:top-[368px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                 onClick={() => {restProducts()}}>
                                                     <MinusIcon className="h-2 w-2 text-white"/>
                                                 </button>
@@ -284,7 +297,8 @@ const EditTicket = () => {
             </div>
             <div className='w-full border-t border-gray-300 my-2'></div>
             <div className='text-center'>
-                <button className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900">
+                <button className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+                onClick={createKitchen}>
                     ENVIAR
                 </button>
             </div>

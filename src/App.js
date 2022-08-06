@@ -9,6 +9,8 @@ import TicketsPOS from './components/TicketsPOS';
 import EditTicket from './components/EditTicket';
 import Waiter from './components/Waiter';
 import WaiterEdit from './components/WaiterEdit';
+import Kitchen from './components/Kitchen';
+import KitchenEdit from './components/KitchenEdit';
 
 import {
   BrowserRouter,
@@ -30,6 +32,8 @@ function App() {
         <Route path="/pos/edittickets/:id" element={<EditTicket />}/>
         <Route path="/waiter" element={<Waiter />}/>
         <Route path="/editwaiter/:id" element={<WaiterEdit />}/>
+        <Route path="/kitchen" element={<Kitchen />}/>
+        <Route path="/editkitchen/:id" element={<KitchenEdit />}/>
       </Routes>
     </BrowserRouter>
   );
