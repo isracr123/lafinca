@@ -11,6 +11,7 @@ import Waiter from './components/Waiter';
 import WaiterEdit from './components/WaiterEdit';
 import Kitchen from './components/Kitchen';
 import KitchenEdit from './components/KitchenEdit';
+import Login from './components/Login';
 
 import {
   BrowserRouter,
@@ -22,6 +23,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/" element={<Login />}/>
         <Route path="/pos" element={<Pos />}/>
         <Route path="/pos/createcategory" element={<CreateCategory />}/>
         <Route path="/pos/editcategory/:id" element={<EditCategory />}/>
