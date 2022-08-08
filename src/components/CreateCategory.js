@@ -14,7 +14,7 @@ const CreateCategory = () => {
 
   /*Get Categories*/
   const getCategoriesData = async () => {
-    const a = await axios.get('http://localhost:4000/api/categories');
+    const a = await axios.get('http://192.168.0.10:4000/api/categories');
     setGetCategories(a.data);
   } 
 
@@ -29,17 +29,23 @@ const CreateCategory = () => {
         if (filteredArray.length > 0){
             alert('Categoria Repetida | Elige otro nombre');
         } else{
-            axios.post('http://localhost:4000/api/categories', {
+            axios.post('http://192.168.0.10:4000/api/categories', {
             category: createCategory,
             });
-            window.location.href = 'http://localhost:3000/pos/';
+            alert('Guardado');
         }
+    }else if (getCategories == ''){
+        axios.post('http://192.168.0.10:4000/api/categories', {
+            category: createCategory,
+        });
+        alert('Guardado');
     }
+
   }
 
   return (
     <div className="bg-black absolute inset-0 flex flex-col space-y-14 items-center justify-center">
-        <a href="http://localhost:3000/pos/">
+        <a href="http://192.168.0.10:3000/pos/">
         <div className='flex flex-row justify-center items-center'>
             <p className='text-white'>Cerrar</p>   
             <XIcon className='h-6 w-10 text-white'/>

@@ -20,13 +20,13 @@ const EditCategory = () => {
 
     /*Get categories*/
     const getCategoriesData = async () => {
-        const c = await axios.get('http://localhost:4000/api/categories');
+        const c = await axios.get('http://192.168.0.10:4000/api/categories');
         setCategory(c.data);
     }
 
     /*Get categoryData*/
     const getCategoryData = async () => {
-        const c = await axios.get('http://localhost:4000/api/categories/' + newid.id);
+        const c = await axios.get('http://192.168.0.10:4000/api/categories/' + newid.id);
         setActualCategory(c.data.category);
     }
 
@@ -40,9 +40,10 @@ const EditCategory = () => {
         const filteredArray = array.filter(array => array===uno)
         /*Repeated Value = Nothing || No Repeated Value = Update */
         if (filteredArray.length===0){
-            await axios.put('http://localhost:4000/api/categories/'+ newid.id,{
+            await axios.put('http://192.168.0.10:4000/api/categories/'+ newid.id,{
             category: newCategory,
             });
+            alert('Actualizado');
         }else{
             alert("Categoria repetida, elige otro nombre");
         }
@@ -50,7 +51,7 @@ const EditCategory = () => {
 
   return (
     <div className="bg-black absolute inset-0 flex flex-col space-y-6 items-center justify-center">
-        <a href="http://localhost:3000/pos/">
+        <a href="http://192.168.0.10:3000/pos/">
         <div className='flex flex-row justify-center items-center'>
             <p className='text-white'>Cerrar</p>   
             <XIcon className='h-6 w-10 text-white'/>
@@ -71,12 +72,10 @@ const EditCategory = () => {
             <div className="md:flex md:items-center">
                 <div className="md:w-1/3"></div>
                 <div className="md:w-2/3">
-                <a href="http://localhost:3000/pos/">
                 <button className="shadow bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"
                 onClick={() => updateCategory()} >
                         Actualizar 
                 </button>
-                </a>
                 </div>
             </div>
         </form> 
