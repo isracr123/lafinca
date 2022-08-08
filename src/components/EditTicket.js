@@ -219,19 +219,19 @@ const EditTicket = () => {
         </div>
         <div className='w-96 rounded-3xl bg-black shadow-xl overflow-hidden z-10'>
             <div className='text-left w-full text-sm p-6'>
-                <div className='p-4 w-full'>
-                    <button className='w-full text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-200 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700' onClick={()=>{
+                <div className='p-4 w-full space-y-2'>
+                    <button className='bg-yellow-500 text-black text-base px-4 py-3 rounded-2xl w-full focus:outline-none' onClick={()=>{
                     const function1 = window.location.href='http://localhost:3000/pos/tickets';
                     }}>
                         X Cerrar
                     </button>
-                    <button className='w-full text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700'
+                    <button className='bg-yellow-500 text-white text-base px-4 py-3 rounded-2xl w-full focus:outline-none'
                     onClick={()=>{
                         const function1 = updateTickets();
                     }}>
                         Actualizar
                     </button>
-                    <button className='bg-yellow-500 text-white text-lg px-4 py-3 rounded-2xl w-full focus:outline-none'
+                    <button className='bg-yellow-500 text-white text-base px-4 py-3 rounded-2xl w-full focus:outline-none'
                     onClick={handlePrint}>
                         IMPRIMIR
                     </button>
