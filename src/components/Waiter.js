@@ -136,8 +136,6 @@ const EditTicket = () => {
                         <tr>
                             <th className='py-1 w-1/12 text-center'>#</th>
                             <th className='py-1 text-left'>Producto</th>
-                            <th className='py-1 w-2/12 text-center'>Precio</th>
-                            <th className='py-1 w-2/12 text-right'>Subtotal</th>
                         </tr>
                     </thead>
                     <tbody className='flex-row'>
@@ -164,38 +162,6 @@ const EditTicket = () => {
                                                 <Link to={"/editwaiter/" + w._id}>
                                                     <p>{w.products}</p>
                                                 </Link>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>
-                                <table className='mx-5'>
-                                    <tbody>
-                                        <tr>
-                                            <td className='py-1 text-center'>
-                                                <div className='grid grid-cols-2 space-x-2'>
-                                                    <p>$</p> 
-                                                    <p className='w-7 border-2 border-black'>
-                                                        {w.price}
-                                                    </p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>
-                                <table className='mx-6 '>
-                                    <tbody>
-                                        <tr>
-                                            <td className='py-1 text-center'>
-                                                <div className='grid grid-cols-2 space-x-2'>
-                                                    <p>$</p> 
-                                                    <p className='w-7 border-2 border-black'>
-                                                        {w.subtotal}
-                                                    </p>
-                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -239,7 +205,7 @@ const EditTicket = () => {
                                                             </div>
                                                         }
                                                         wrapperStyle={{
-                                                            border: "solid 2px #000000"
+                                                            border: "solid 2px #000000",
                                                         }}
                                                         value={value || ''}
                                                         onChange={(e) => setValue(e.target.value)}
@@ -248,38 +214,6 @@ const EditTicket = () => {
                                                             const function2 = filterPrice(value);
                                                         }}
                                                     />: null}
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>
-                                <table className='mx-5'>
-                                    <tbody>
-                                        <tr>
-                                            <td className='py-1 text-center'>
-                                                <div className='grid grid-cols-2 space-x-2'>
-                                                    <p>$</p> 
-                                                    <p className='w-7 border-2 border-black'>
-                                                        {price}
-                                                    </p>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>
-                                <table className='mx-6 '>
-                                    <tbody>
-                                        <tr>
-                                            <td className='py-1 text-center'>
-                                                <div className='grid grid-cols-2 space-x-2'>
-                                                    <p>$</p> 
-                                                    <p className='w-7 border-2 border-black'>
-                                                        {subtotal}
-                                                    </p>
-                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>

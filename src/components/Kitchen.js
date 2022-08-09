@@ -36,10 +36,8 @@ const Kitchen = () => {
           <table className='w-full text-xs'>
             <thead>
               <tr>
-                <th className='py-1 w-1/12 text-center'>#</th>
-                <th className='py-1 text-left'>Producto</th>
-                <th className='py-1 w-2/12 text-center'>Precio</th>
-                <th className='py-1 px-2 w-1/12 text-right'>Subtotal</th>
+                <th className='py-1 w-1/12 text-center text-lg'>#</th>
+                <th className='py-1 text-left text-lg'>Producto</th>
               </tr>
               </thead>
               <tbody className='flex-row'>
@@ -49,7 +47,7 @@ const Kitchen = () => {
                       <tbody>
                         {k.products.map((a, key)=>
                         <tr key={key}>
-                          <td className='py-1 px-4 text-center flex-col'>{a.qty}</td>
+                          <td className='py-1 px-4 text-center flex-col text-lg'>{a.qty}</td>
                         </tr>)}
                       </tbody>
                     </table>
@@ -59,27 +57,7 @@ const Kitchen = () => {
                       <tbody>
                         {k.products.map((b, key)=>
                         <tr key={key}>
-                          <td className='py-1 text-left'>{b.products}</td>
-                        </tr>)}
-                      </tbody>
-                    </table>
-                  </td>
-                  <td>
-                    <table>
-                      <tbody>
-                        {k.products.map((c, key)=>
-                        <tr key={key}>
-                          <td className='py-1 px-4 text-center'>${c.price}</td>
-                        </tr>)}
-                      </tbody>
-                    </table>
-                  </td>
-                  <td>
-                    <table>
-                      <tbody>
-                        {k.products.map((d, key)=>
-                        <tr key={key}>
-                          <td className='py-1 px-9 text-right'>${d.subtotal}</td>
+                          <td className='py-1 text-left text-lg'>{b.products}</td>
                         </tr>)}
                       </tbody>
                     </table>
@@ -88,19 +66,6 @@ const Kitchen = () => {
               </tbody>   
           </table>
           <div className='w-full border-t border-gray-300 my-2'></div>
-          <div className='flex font-semibold'>
-            <div className='flex-grow'>Total</div>
-            <div>${k.total}</div>
-          </div>
-          <div className='flex text-xs font-semibold'>
-            <div className='flex-grow'>Pago</div>
-            <div>${k.pay}</div>
-          </div>
-          <div className='w-full border-t border-gray-300 my-2'></div>
-            <div className='flex text-xs font-semibold'>
-              <div className='flex-grow'>Cambio</div>
-              <div>${k.change}</div>
-          </div>
           <Link to={"/editkitchen/" + k._id} >
             <button className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-2 border border-gray-400 rounded shadow w-full my-2'>
                 Editar

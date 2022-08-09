@@ -53,6 +53,11 @@ const WaiterEdit = () => {
     window.location.href='http://localhost:3000/waiter';
   }
 
+  const CloseFunction = () => {
+    window.location.href="http://localhost:3000/waiter";
+  }
+
+
   return (
     <div className='fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-1 overflow-y-scroll'>
     <div className='w-96 rounded-3xl bg-black shadow-xl overflow-hidden z-10 '>
@@ -71,12 +76,11 @@ const WaiterEdit = () => {
                         <tr>
                             <th className='py-1 w-1/12 text-center'>#</th>
                             <th className='py-1 text-left'>Producto</th>
-                            <th className='py-1 w-2/12 text-center'>Precio</th>
-                            <th className='py-1 w-2/12 text-right'>Subtotal</th>
                         </tr>
                     </thead>
                     <tbody className='flex-row'>
                         <tr>
+  
                             <td>
                                 <table className='mx-5'>
                                     <tbody>
@@ -98,38 +102,8 @@ const WaiterEdit = () => {
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-left overflow-visible'>
-                                                <input className='w-30 border-2 border-white text-black' defaultValue={oldProduct}
+                                                <input className='w-60 border-2 border-white text-black' defaultValue={oldProduct}
                                                 onChange={(event) => {setProduct(event.target.value)}}/>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>
-                                <table className='mx-5'>
-                                    <tbody>
-                                        <tr>
-                                            <td className='py-1 text-center text-white'>
-                                                <div className='grid grid-cols-2 space-x-2'>
-                                                    <p>$</p> 
-                                                    <input className='w-7 border-2 border-white text-black' defaultValue={oldPrice}
-                                                    onChange={(event) => {setPrice(event.target.value)}}/>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </td>
-                            <td>
-                                <table className='mx-6 '>
-                                    <tbody>
-                                        <tr>
-                                            <td className='py-1 text-center text-white'>
-                                                <div className='grid grid-cols-2 space-x-2'>
-                                                    <p>$</p> 
-                                                    <input className='w-7 border-2 border-white text-black' defaultValue={oldSubtotal}
-                                                    onChange={(event) => {setSubtotal(event.target.value)}}/>
-                                                </div>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -141,6 +115,10 @@ const WaiterEdit = () => {
             </div>
             <div className='w-full border-t border-gray-300 my-2'></div>
             <div className='text-center'>
+                <button className=" focus:outline-none text-black bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
+                    onClick={CloseFunction}>
+                        Salir
+                </button>
                 <button className="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm px-5 py-2.5 mr-2 mb-2 dark:focus:ring-yellow-900"
                 onClick={updateOneWaiter}>
                     Actualizar
