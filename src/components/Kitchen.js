@@ -8,10 +8,17 @@ import {Link} from 'react-router-dom'
 const Kitchen = () => {
 
   const [kitchen, setKitchen] = useState('');
+  const [repeater,setRepeater]=useState(0);
 
   useEffect(() => {
     getKitchen();
   }, []);
+
+  useEffect(() => {
+    getKitchen();
+    setTimeout(() => setRepeater(prevState=>prevState+1), 10000);
+  }, [repeater])
+
 
   /*Get Tickets*/
   const getKitchen = async () => {
@@ -45,9 +52,9 @@ const Kitchen = () => {
                   <td>
                     <table>
                       <tbody>
-                        {k.products.map((a, key)=>
+                        {k.qty.map((a, key)=>
                         <tr key={key}>
-                          <td className='py-1 px-4 text-center flex-col text-lg'>{a.qty}</td>
+                          <td className='py-1 px-4 text-center flex-col text-lg'>{a}</td>
                         </tr>)}
                       </tbody>
                     </table>
@@ -57,7 +64,7 @@ const Kitchen = () => {
                       <tbody>
                         {k.products.map((b, key)=>
                         <tr key={key}>
-                          <td className='py-1 text-left text-lg'>{b.products}</td>
+                          <td className='py-1 text-left text-lg'>{b}</td>
                         </tr>)}
                       </tbody>
                     </table>

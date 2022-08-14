@@ -5,9 +5,10 @@ import { PlusIcon, MinusIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import Autocomplete from 'react-autocomplete';
 import {Link} from 'react-router-dom';
+
 console.warn = () => {}
 
-const EditTicket = () => {
+const Waiter = () => {
 
   useEffect(() => {
     getProductsData();
@@ -15,17 +16,16 @@ const EditTicket = () => {
   }, []);
 
   const date = new Date();
-  
+
   /* Variables*/
   const [name, setName] = useState('Nombre');
   const [table, setTable] = useState(1);
   const [qty, setQty] = useState(1);
   const [products, setProducts] = useState('');
-  const [price, setPrice] = useState(0);
-  const [subtotal, setSubtotal] = useState(0);
-  const [total, setTotal] = useState(0);
-  const [pay, setPay] = useState(0);
-  const [change, setChange] = useState(0);
+
+  /* Create Kitchen Variables*/
+  const [arrayProducts, setArrayProducts] = useState('');
+  const [arrayQty, setArrayQty] = useState('');
 
   /*Waiter */
   const [waiter, setWaiter] = useState('');
@@ -48,18 +48,10 @@ const EditTicket = () => {
     setWaiter(w.data);
   } 
 
-  /*Filter price */
-  const filterPrice = (product) => {
-    const array = products.filter((item) => item.product.toLowerCase().includes(product.toLowerCase()));
-    setPrice(array[0].price);
-    setSubtotal(array[0].price*qty)
-  }
-
   /*Sum products*/
   const sumProducts = () => {
     if (qty >= 0) {
         setQty(qty+1);
-        setSubtotal(price*(qty+1));
     }else{
     }
   }
@@ -68,7 +60,6 @@ const EditTicket = () => {
   const restProducts = () => {
     if (qty > 0) {
         setQty(qty-1);
-        setSubtotal(price*(qty-1));
     }else{
     }
   }
@@ -77,9 +68,7 @@ const EditTicket = () => {
   const createWaiter = () => {
     axios.post('http://localhost:4000/api/waiter', {
                 qty: qty,
-                products: value,
-                price: price, 
-                subtotal: subtotal,
+                products: value
     });
     getWaiters();
   }
@@ -93,17 +82,30 @@ const EditTicket = () => {
     }
   }
 
+  /*Kitchen Data*/
+  const kitchenData = () => {
+    const products = waiter.map (w => w.products);
+    const qty = waiter.map (w => w.qty);
+    setArrayProducts(products);
+    setArrayQty(qty);
+  }
+
   /*Create Kitchen Data*/
   const createKitchen = () => {
-    axios.post('http://localhost:4000/api/kitchen', {
+    if (arrayProducts === ''){
+        console.log(arrayProducts);
+        console.log(arrayQty);
+        kitchenData();
+    }else{
+        axios.post('http://localhost:4000/api/kitchen', {
         date: date,
         waiter: name,
         table: table, 
-        products: waiter,
-        total: total,
-        pay: pay, 
-        change: change,
-    });
+        qty: arrayQty,
+        products: arrayProducts,
+        });
+        alert('Enviado');
+    }
   }
 
   return (
@@ -210,8 +212,7 @@ const EditTicket = () => {
                                                         value={value || ''}
                                                         onChange={(e) => setValue(e.target.value)}
                                                         onSelect={(value) => {
-                                                            const function1 = setValue(value);
-                                                            const function2 = filterPrice(value);
+                                                            setValue(value);
                                                         }}
                                                     />: null}
                                             </td>
@@ -243,4 +244,4 @@ const EditTicket = () => {
   )
 }
 
-export default EditTicket
+export default Waiter

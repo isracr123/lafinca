@@ -16,33 +16,25 @@ const WaiterEdit = () => {
     }, []);
 
   /*Old Product*/
-  const [oldPrice, setOldPrice]= useState();
   const [oldProduct, setOldProduct] = useState('');
   const [oldQty, setOldQty] =  useState();
-  const [oldSubtotal, setOldSubtotal] = useState();
 
   /*New Product*/
-  const [price, setPrice]= useState(0);
   const [product, setProduct] = useState('');
   const [qty, setQty] =  useState(0);
-  const [subtotal, setSubtotal] = useState('');
 
   /*Get One Waiter*/
   const getOneWaiter = async (id) => {
     const w = await axios.get('http://localhost:4000/api/waiter/' + id);
-    setOldPrice(w.data.price);
     setOldProduct(w.data.products);
     setOldQty(w.data.qty);
-    setOldSubtotal(w.data.subtotal);
   }
 
   /*Update Waiter*/
   const updateOneWaiter = async () => {
     await axios.put('http://localhost:4000/api/waiter/' + id, {
-        qty: qty,
-        products: product,
-        price: price, 
-        subtotal: subtotal,
+        qty: qty || oldQty,
+        products: product || oldProduct,
     });
     window.location.href='http://localhost:3000/waiter';
  }
