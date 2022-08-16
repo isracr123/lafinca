@@ -12,6 +12,10 @@ import WaiterEdit from './components/WaiterEdit';
 import Kitchen from './components/Kitchen';
 import KitchenEdit from './components/KitchenEdit';
 import Login from './components/Login';
+import WaiterTwo from './components/WaiterTwo';
+import WaiterTwoEdit from './components/WaiterTwoEdit';
+import WaiterThree from './components/WaiterThree';
+import WaiterThreeEdit from './components/WaiterThreeEdit'
 
 import {
   BrowserRouter,
@@ -34,6 +38,13 @@ function App() {
         <Route path="/pos/edittickets/:id" element={<EditTicket />}/>
         <Route path="/waiter" element={<Waiter />}/>
         <Route path="/editwaiter/:id" element={<WaiterEdit />}/>
+        {/* Waiter Two */}
+        <Route path="/waiterTwo" element={<WaiterTwo />}/>
+        <Route path="/editwaitertwo/:id" element={<WaiterTwoEdit />}/>
+        {/* Waiter Three */}
+        <Route path="/waiterThree" element={<WaiterThree />}/>
+        <Route path="/editwaiterthree/:id" element={<WaiterThreeEdit />}/>
+        {/* Kitchen */}
         <Route path="/kitchen" element={<Kitchen />}/>
         <Route path="/editkitchen/:id" element={<KitchenEdit />}/>
       </Routes>
