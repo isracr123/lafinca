@@ -1,41 +1,30 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import axios from "axios";
 
+const SignUp = () => {
 
-const Login = () => {
-
+    //! Hooks
     const [user, setUser] = useState({
         email: "",
-        password: ""
+        password: "",
+        confirmPassword: ""
     });
 
-
-    const handleChange = e => {
+    const handleChange = (e) => {
         const { name, value } = e.target;
         setUser({
             ...user,
             [name]: value
         });
-    };
+    }
 
-
-    const login = () => {
-        axios.post("http://localhost:4000/login", user)
-            .then(res => {
-                if (res.data.message === 'Logged In!!!'){
-                    if (user.email === 'waiterOne'){
-                        window.location.href = 'http://localhost:3000/waiter';
-                    }else if (user.email === 'waiterTwo'){
-                        window.location.href = 'http://localhost:3000/waiterTwo';
-                    }else if (user.email === 'waiterThree'){
-                        window.location.href = 'http://localhost:3000/waiterThree';
-                    }else{
-                        alert('Logged In')
-                    }
-                }else{
-                    alert('Usuario y contraseña incorrectos')
-                }
-            });
+    const register = () => {
+        const { email, password, confirmPassword } = user;
+        if (email && password && (password === confirmPassword)) {
+            axios.post("http://localhost:4000/register", user).then(res => { console.log(res); });
+        } else {
+            alert("Completa todos los campos");
+        }
     }
 
 
@@ -53,7 +42,7 @@ const Login = () => {
                         type="text"
                         className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-yellow-600 focus:outline-none"
                         placeholder="Usuario"
-                        name="email" 
+                        name='email'
                         defaultValue={user.email} 
                         onChange={handleChange} required
                         autoComplete="on"
@@ -64,27 +53,32 @@ const Login = () => {
                         type="password"
                         className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-yellow-600 focus:outline-none"
                         placeholder="Contraseña"
-                        name="password" 
                         defaultValue={user.password} 
-                        onChange={handleChange}
+                        onChange={handleChange} required
                         autoComplete="on"
+                        name="password"
                         />
                     </div>
-
-                    {/* <div className="flex justify-between items-center mb-6">
-                        <a
-                        href="#!"
-                        className="text-yellow-600 hover:text-yellow-700 focus:text-yellow-700 active:text-yellow-800 duration-200 transition ease-in-out">
-                        Olvidaste contraseña?</a>
-                    </div> */}
+                    <div className="mb-6">
+                        <input
+                        type="password"
+                        className="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-yellow-600 focus:outline-none"
+                        placeholder="Confirmar contraseña"
+                        defaultValue={user.confirmPassword} 
+                        onChange={handleChange}
+                        required 
+                        autoComplete="on"
+                        name="confirmPassword"
+                        />
+                    </div>
                     <button
                         type="submit"
                         className="inline-block px-7 py-3 bg-yellow-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-yellow-700 hover:shadow-lg focus:bg-yellow-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out w-full"
                         data-mdb-ripple="true"
                         data-mdb-ripple-color="light"
-                        onClick={login}
+                        onClick={register}
                     >
-                        Entrar
+                        Registrar
                     </button>
                     </form>
                 </div>
@@ -95,4 +89,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default SignUp

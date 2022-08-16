@@ -15,7 +15,12 @@ import Login from './components/Login';
 import WaiterTwo from './components/WaiterTwo';
 import WaiterTwoEdit from './components/WaiterTwoEdit';
 import WaiterThree from './components/WaiterThree';
-import WaiterThreeEdit from './components/WaiterThreeEdit'
+import WaiterThreeEdit from './components/WaiterThreeEdit';
+import SignUp from './components/SignUp';
+import PrivateRoutes from './utils/PrivateRoutes'
+import PrivateRoutesTwo from './utils/PrivateRoutesTwo';
+import PrivateRoutesThree from './utils/PrivateRoutesThree';
+import PrivateRoutesFour from './utils/PrivateRoutesFour';
 
 import {
   BrowserRouter,
@@ -27,23 +32,35 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* Public Routes */}
         <Route path="/" element={<Login />}/>
-        <Route path="/pos" element={<Pos />}/>
-        <Route path="/pos/createcategory" element={<CreateCategory />}/>
-        <Route path="/pos/editcategory/:id" element={<EditCategory />}/>
-        <Route path="/pos/createproduct" element={<CreateProduct />}/>
-        <Route path="/pos/editproduct/:id" element={<EditProducts />}/>
-        <Route path="/pos/receipt" element={<Receipt />}/>
-        <Route path="/pos/tickets" element={<TicketsPOS />}/>
-        <Route path="/pos/edittickets/:id" element={<EditTicket />}/>
-        <Route path="/waiter" element={<Waiter />}/>
-        <Route path="/editwaiter/:id" element={<WaiterEdit />}/>
+        <Route path="/register" element={<SignUp />}/>
+        {/* POS System */}
+        <Route element={<PrivateRoutes />}>
+          <Route path="/pos" element={<Pos />}/>
+          <Route path="/pos/createcategory" element={<CreateCategory />}/>
+          <Route path="/pos/editcategory/:id" element={<EditCategory />}/>
+          <Route path="/pos/createproduct" element={<CreateProduct />}/>
+          <Route path="/pos/editproduct/:id" element={<EditProducts />}/>
+          <Route path="/pos/receipt" element={<Receipt />}/>
+          <Route path="/pos/tickets" element={<TicketsPOS />}/>
+          <Route path="/pos/edittickets/:id" element={<EditTicket />}/>
+        </Route>
+        {/* Waiter */}
+        <Route element={<PrivateRoutesTwo />}>
+          <Route path="/waiter" element={<Waiter />}/>
+          <Route path="/editwaiter/:id" element={<WaiterEdit />}/>
+        </Route>
         {/* Waiter Two */}
-        <Route path="/waiterTwo" element={<WaiterTwo />}/>
-        <Route path="/editwaitertwo/:id" element={<WaiterTwoEdit />}/>
+        <Route element={<PrivateRoutesThree />}>
+          <Route path="/waiterTwo" element={<WaiterTwo />}/>
+          <Route path="/editwaitertwo/:id" element={<WaiterTwoEdit />}/>
+        </Route>
         {/* Waiter Three */}
-        <Route path="/waiterThree" element={<WaiterThree />}/>
-        <Route path="/editwaiterthree/:id" element={<WaiterThreeEdit />}/>
+        <Route element={<PrivateRoutesFour />}>
+          <Route path="/waiterThree" element={<WaiterThree />}/>
+          <Route path="/editwaiterthree/:id" element={<WaiterThreeEdit />}/>
+        </Route>
         {/* Kitchen */}
         <Route path="/kitchen" element={<Kitchen />}/>
         <Route path="/editkitchen/:id" element={<KitchenEdit />}/>
