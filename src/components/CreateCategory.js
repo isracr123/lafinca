@@ -7,6 +7,8 @@ const CreateCategory = () => {
 
   const [createCategory, setCreateCategory] = useState('');
   const [getCategories, setGetCategories] = useState('');
+  const [selectedFile, setSelectedFile] = useState('');
+
 
   useEffect(() => {
     getCategoriesData();
@@ -14,38 +16,86 @@ const CreateCategory = () => {
 
   /*Get Categories*/
   const getCategoriesData = async () => {
-    const a = await axios.get('http://192.168.0.10:4000/api/categories');
+    const a = await axios.get('http://localhost:4000/api/categories');
     setGetCategories(a.data);
   } 
 
   /*Add Categories*/
   const Functions = () => {
-    if (createCategory === ''){
-        alert('Llena todos los campos');
-    }else if (getCategories != ''){
-        const array = getCategories && getCategories.map((a) => (a.category));
-        /*Compare if the value is repeated in categories*/
-        const filteredArray = array.filter(array => array===createCategory);
-        if (filteredArray.length > 0){
-            alert('Categoria Repetida | Elige otro nombre');
-        } else{
-            axios.post('http://192.168.0.10:4000/api/categories', {
-            category: createCategory,
-            });
-            alert('Guardado');
-        }
-    }else if (getCategories == ''){
-        axios.post('http://192.168.0.10:4000/api/categories', {
-            category: createCategory,
-        });
-        alert('Guardado');
-    }
+    /*Form Data if there is an image*/
+    var bodyFormData = new FormData();
+    bodyFormData.append('category', createCategory); 
+    bodyFormData.append("categoryImage", selectedFile);
+    /*Type of the image*/
+    if (selectedFile.type === 'image/jpeg' || selectedFile.type === 'image/jpg' || selectedFile.type === 'image/png'){
+        /*Size of the image*/
+        if (selectedFile.size <= 5200000){
+            /*No categories*/
+            if (createCategory === ''){
+                alert('Llena todos los campos');
+            /*With categories*/
+            }else if (getCategories !== ''){
+                /*Map categories*/
+                const array = getCategories && getCategories.map((a) => (a.category)); 
+                /*Compare if the value is repeated in categories */
+                const filteredArray = array.filter(array => array===createCategory);
+                /*If repeated categories*/
+                if (filteredArray.length > 0){
+                    alert('Categoria Repetida | Elige otro nombre');
 
+                /*No repeated categories*/
+                } else{
+
+                    axios({
+                        method: "post",
+                        url: "http://localhost:4000/api/categories",
+                        data: bodyFormData,
+                        headers: { "Content-Type": "multipart/form-data" },
+                      })
+                        .then(function (response) {
+                          //handle success
+                          console.log(response);
+                        })
+                        .catch(function (response) {
+                          //handle error
+                          console.log(response);
+                        });
+                    alert('Guardado');
+                    window.location.href = 'http://localhost:3000/pos/';
+                }
+            /*No categories*/
+            }else if (getCategories === ''){
+
+                axios({
+                    method: "post",
+                    url: "http://localhost:4000/api/categories",
+                    data: bodyFormData,
+                    headers: { "Content-Type": "multipart/form-data" },
+                })
+                .then(function (response) {
+                  //handle success
+                  console.log(response);
+                })
+                .catch(function (response) {
+                  //handle error
+                  console.log(response);
+                });
+                alert('Guardado'); 
+                window.location.href = 'http://localhost:3000/pos/';
+            }
+        }else{
+            alert('Solo se aceptan 1024 x 1024 o menor');
+        }
+    }else if (selectedFile === ''){
+       alert('Elige una imagen')
+    }else{
+        alert('Solo se aceptan formatos JPEG, JPG, PNG');
+    }
   }
 
   return (
     <div className="bg-black absolute inset-0 flex flex-col space-y-14 items-center justify-center">
-        <a href="http://192.168.0.10:3000/pos/">
+        <a href="http://localhost:3000/pos/">
         <div className='flex flex-row justify-center items-center'>
             <p className='text-white'>Cerrar</p>   
             <XIcon className='h-6 w-10 text-white'/>
@@ -54,8 +104,16 @@ const CreateCategory = () => {
         <div className="flex w-full h-8 items-center justify-center space-y-3">
             <label className="w-auto flex flex-col items-center px-4 py-0 bg-white text-yellow-50 rounded-lg shadow-lg tracking-wide uppercase border border-yellow-50 hover:bg-yellow-50 hover:text-black cursor-pointer space-y-1">
                 <span className="mt-2 text-base leading-normal text-black ">Imagen</span>
-                <PhotographIcon className='h-auto w-auto justify-center -mt-3 text-black'/>
-                <input type='file' className="hidden"/>
+                {selectedFile ?
+                    <img src={URL.createObjectURL(selectedFile)} alt="" className='object-contain h-24 w-48' />
+                :   <PhotographIcon className='h-auto w-auto justify-center -mt-3 text-black'/>
+                }
+                <input 
+                    type='file' 
+                    className="hidden"
+                    onChange={(e) => setSelectedFile(e.target.files[0])}
+                    name="file"
+                />
             </label>
         </div>
         <form className="w-full max-w-sm  ">

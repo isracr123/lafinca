@@ -38,29 +38,29 @@ function App() {
         {/* POS System */}
         <Route element={<PrivateRoutes />}>
           <Route path="/pos" element={<Pos />}/>
-          <Route path="/pos/createcategory" element={<CreateCategory />}/>
-          <Route path="/pos/editcategory/:id" element={<EditCategory />}/>
-          <Route path="/pos/createproduct" element={<CreateProduct />}/>
-          <Route path="/pos/editproduct/:id" element={<EditProducts />}/>
-          <Route path="/pos/receipt" element={<Receipt />}/>
-          <Route path="/pos/tickets" element={<TicketsPOS />}/>
-          <Route path="/pos/edittickets/:id" element={<EditTicket />}/>
         </Route>
+        <Route path="/pos/createcategory" element={<CreateCategory />}/>
+        <Route path="/pos/editcategory/:id" element={<EditCategory />}/>
+        <Route path="/pos/createproduct" element={<CreateProduct />}/>
+        <Route path="/pos/editproduct/:id" element={<EditProducts />}/>
+        <Route path="/pos/receipt" element={<Receipt />}/>
+        <Route path="/pos/tickets" element={<TicketsPOS />}/>
+        <Route path="/pos/edittickets/:id" element={<EditTicket />}/>
         {/* Waiter */}
         <Route element={<PrivateRoutesTwo />}>
           <Route path="/waiter" element={<Waiter />}/>
-          <Route path="/editwaiter/:id" element={<WaiterEdit />}/>
         </Route>
+        <Route path="/editwaiter/:id" element={<WaiterEdit />}/>
         {/* Waiter Two */}
         <Route element={<PrivateRoutesThree />}>
           <Route path="/waiterTwo" element={<WaiterTwo />}/>
-          <Route path="/editwaitertwo/:id" element={<WaiterTwoEdit />}/>
         </Route>
+        <Route path="/editwaitertwo/:id" element={<WaiterTwoEdit />}/>
         {/* Waiter Three */}
         <Route element={<PrivateRoutesFour />}>
           <Route path="/waiterThree" element={<WaiterThree />}/>
-          <Route path="/editwaiterthree/:id" element={<WaiterThreeEdit />}/>
         </Route>
+        <Route path="/editwaiterthree/:id" element={<WaiterThreeEdit />}/>
         {/* Kitchen */}
         <Route path="/kitchen" element={<Kitchen />}/>
         <Route path="/editkitchen/:id" element={<KitchenEdit />}/>

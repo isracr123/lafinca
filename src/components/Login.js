@@ -23,12 +23,14 @@ const Login = () => {
         axios.post("http://localhost:4000/login", user)
             .then(res => {
                 if (res.data.message === 'Logged In!!!'){
-                    if (user.email === 'waiterOne'){
-                        window.location.href = 'http://localhost:3000/waiter';
+                    if (user.email === 'admin'){
+                        window.location.href = 'http://localhost:3000/pos';
+                    }else if (user.email === 'waiterOne'){
+                        window.location.href = 'http://localhost:3000/waiter/';
                     }else if (user.email === 'waiterTwo'){
-                        window.location.href = 'http://localhost:3000/waiterTwo';
+                        window.location.href = 'http://localhost:3000/waiterTwo/';
                     }else if (user.email === 'waiterThree'){
-                        window.location.href = 'http://localhost:3000/waiterThree';
+                        window.location.href = 'http://localhost:3000/waiterThree/';
                     }else{
                         alert('Logged In')
                     }
