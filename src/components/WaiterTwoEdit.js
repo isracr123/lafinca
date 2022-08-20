@@ -25,28 +25,28 @@ const WaiterTwoEdit = () => {
 
   /*Get One Waiter*/
   const getOneWaiter = async (id) => {
-    const w = await axios.get('http://localhost:4000/api/waiterTwo/' + id);
+    const w = await axios.get('http://192.168.0.243:4000/api/waiterTwo/' + id);
     setOldProduct(w.data.products);
     setOldQty(w.data.qty);
   }
 
   /*Update Waiter*/
   const updateOneWaiter = async () => {
-    await axios.put('http://localhost:4000/api/waiterTwo/' + id, {
+    await axios.put('http://192.168.0.243:4000/api/waiterTwo/' + id, {
         qty: qty || oldQty,
         products: product || oldProduct,
     });
-    window.location.href='http://localhost:3000/waiterTwo';
+    window.location.href='http://192.168.0.243:3000/waiterTwo';
  }
  
   /*Delete Products*/
   const deleteWaiter = async () => {
-    await axios.delete('http://localhost:4000/api/waiterTwo/' + id);
-    window.location.href='http://localhost:3000/waiterTwo';
+    await axios.delete('http://192.168.0.243:4000/api/waiterTwo/' + id);
+    window.location.href='http://192.168.0.243:3000/waiterTwo';
   }
 
   const CloseFunction = () => {
-    window.location.href="http://localhost:3000/waiterTwo";
+    window.location.href="http://192.168.0.243:3000/waiterTwo";
   }
 
 
@@ -78,7 +78,7 @@ const WaiterTwoEdit = () => {
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-center flex-col text-white'>
-                                                <button className="absolute top-[320px] left-3 md:left-[580px] md:top-[368px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                <button className="absolute  top-[320px] left-3 md:left-[220px] md:top-[580px] lg:left-[510px] lg:top-[328px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
                                                 onClick={deleteWaiter}>
                                                     <TrashIcon className="h-3 w-3 text-white"/>
                                                 </button>

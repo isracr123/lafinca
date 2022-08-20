@@ -42,24 +42,24 @@ const Receipt = () => {
 
     /*Get Cart*/
     const getCartData = async () => {
-        const a = await axios.get('http://localhost:4000/api/cart');
+        const a = await axios.get('http://192.168.0.243:4000/api/cart');
         setCart(a.data);
     }
     
     /*Get Total*/
     const getTotalData = async () => {
-        const t = await axios.get('http://localhost:4000/api/total');
+        const t = await axios.get('http://192.168.0.243:4000/api/total');
         setTotalData(t.data);
     } 
 
     /*Delete Products*/
     const deleteTotal = async (id) => {
-        await axios.delete('http://localhost:4000/api/total/' + id);
+        await axios.delete('http://192.168.0.243:4000/api/total/' + id);
     }
 
     /*Delete All Cart*/
     const deleteAllCart = async () => {
-        await axios.delete('http://localhost:4000/api/cart/');
+        await axios.delete('http://192.168.0.243:4000/api/cart/');
     }
 
     /*Create tickets*/
@@ -67,7 +67,7 @@ const Receipt = () => {
         if (table === 0 || name === ''){
             alert('Completar todos los campos');
         }else{
-            axios.post('http://localhost:4000/api/tickets', {
+            axios.post('http://192.168.0.243:4000/api/tickets', {
                 date: date,
                 waiter: name,
                 table: table,
@@ -79,7 +79,7 @@ const Receipt = () => {
                 pay: pay,
                 change: change,
             });
-            window.location.href='http://localhost:3000/pos/';
+            window.location.href='http://192.168.0.243:3000/pos/';
             deleteTotal(id);
             deleteAllCart();
         }
@@ -104,9 +104,9 @@ const Receipt = () => {
     }
 
   return (
-    <div className='fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-1 overflow-y-scroll bg-black'>
-        <div className='fixed bg-black w-full h-screen right-1 md:left-[550px] top-10 md:top-[140px] z-0'>
-            <div className='w-96 rounded-3xl bg-white shadow-xl overflow-hidden z-10 ' ref={componentRef}>
+    <div className='scroll-auto w-full min-h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-1 overflow-y-scroll bg-black'>
+        <div className='min-h-screen bg-black md:w-1/4 z-0'>
+            <div className='w-96 rounded-3xl bg-white shadow-xl overflow-hidden z-10' ref={componentRef}>
                 <div className='text-left w-full text-sm p-6'>
                 <div>
                 {totalData && totalData.map(t =><div key={t._id + 1}>
@@ -168,13 +168,13 @@ const Receipt = () => {
                 </div>
                 </div>
             </div>
-            <div className='w-96 rounded-3xl bg-black shadow-xl overflow-hidden z-10'>
+            <div className='w-96 rounded-3xl bg-black shadow-xl overflow-hidden z-10 '>
                 <div className='text-left w-full text-sm p-6'>
                 <div className='p-4 w-full'>
                     <div className='space-y-2'>
                         {totalData && totalData.map(t =><div key={t._id + 2}>
                         <button className='bg-yellow-500 text-black text-base px-4 py-3 rounded-2xl w-full focus:outline-none' onClick={()=>{
-                        const function1 = window.location.href='http://localhost:3000/pos/';
+                        const function1 = window.location.href='http://192.168.0.243:3000/pos/';
                         const function2 = deleteTotal(t._id);
                         }}>
                         X Cerrar

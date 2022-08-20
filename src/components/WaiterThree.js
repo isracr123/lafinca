@@ -38,13 +38,13 @@ const WaiterThree = () => {
  
   /*Get Products*/
   const getProductsData = async () => {
-    const p = await axios.get('http://localhost:4000/api/products');
+    const p = await axios.get('http://192.168.0.243:4000/api/products');
     setProducts(p.data);
   } 
 
   /*Get Waiters*/
   const getWaiters = async () => {
-    const w = await axios.get('http://localhost:4000/api/waiterThree');
+    const w = await axios.get('http://192.168.0.243:4000/api/waiterThree');
     setWaiter(w.data);
   } 
 
@@ -66,7 +66,7 @@ const WaiterThree = () => {
 
   /*Create Waiter data*/
   const createWaiter = () => {
-    axios.post('http://localhost:4000/api/waiterThree', {
+    axios.post('http://192.168.0.243:4000/api/waiterThree', {
                 qty: qty,
                 products: value
     });
@@ -97,7 +97,7 @@ const WaiterThree = () => {
         console.log(arrayQty);
         kitchenData();
     }else{
-        axios.post('http://localhost:4000/api/kitchen', {
+        axios.post('http://192.168.0.243:4000/api/kitchen', {
         date: date,
         waiter: name,
         table: table, 
@@ -109,7 +109,7 @@ const WaiterThree = () => {
   }
 
   return (
-    <div className='fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-1 overflow-y-scroll'>
+    <div className=' w-full min-h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-1 scroll-auto'>
     <div className='w-96 rounded-3xl bg-white shadow-xl overflow-hidden z-10 '>
         <div className='text-left w-full text-sm p-6'>
         <div>  
@@ -176,14 +176,16 @@ const WaiterThree = () => {
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-center flex-col'>
-                                                <button className="absolute left-3 md:left-[580px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                onClick={() => {sumProducts()}}>
-                                                    <PlusIcon className="h-2 w-2 text-white"/>
-                                                </button>
-                                                <button className="absolute top-[320px] left-3 md:left-[580px] md:top-[368px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                onClick={() => {restProducts()}}>
-                                                    <MinusIcon className="h-2 w-2 text-white"/>
-                                                </button>
+                                                <div className='space-y-10'>
+                                                    <button className="absolute left-4 md:left-[200px] lg:left-[510px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                    onClick={() => {sumProducts()}}>
+                                                        <PlusIcon className="h-2 w-2 text-white"/>
+                                                    </button>
+                                                    <button className="absolute left-4 md:left-[200px] lg:left-[510px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                                                    onClick={() => {restProducts()}}>
+                                                        <MinusIcon className="h-2 w-2 text-white"/>
+                                                    </button>
+                                                </div>
                                                 <p className='w-5 border-2 border-black'>
                                                     {qty}
                                                 </p>
@@ -202,7 +204,7 @@ const WaiterThree = () => {
                                                         getItemValue={(item) => item.product}
                                                         items={products && products.filter((item) => item.product.toLowerCase().includes(value.toLowerCase()))}
                                                         renderItem={(item, isHighlighted) =>
-                                                            <div key={item.product} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
+                                                            <div key={item._id} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>
                                                             {item.product}
                                                             </div>
                                                         }

@@ -40,31 +40,31 @@ const Store = (props) => {
 
     /*Get categories*/
     const getCategoriesData = async () => {
-        const c = await axios.get('http://localhost:4000/api/categories');
+        const c = await axios.get('http://192.168.0.243:4000/api/categories');
         setCategory(c.data);
     }
 
     /*Delete categories*/
     const deleteCategories = async (id) => {
-        await axios.delete('http://localhost:4000/api/categories/' + id);
+        await axios.delete('http://192.168.0.243:4000/api/categories/' + id);
         getCategoriesData();
     }
 
     /*Get Products*/
     const getProductsData = async () => {
-        const p = await axios.get('http://localhost:4000/api/products');
+        const p = await axios.get('http://192.168.0.243:4000/api/products');
         setProducts(p.data);
     } 
 
     /*Delete Products*/
     const deleteProducts = async (id) => {
-        await axios.delete('http://localhost:4000/api/products/' + id);
+        await axios.delete('http://192.168.0.243:4000/api/products/' + id);
         getProductsData();
     }
 
     /*Get Cart*/
     const getCartData = async () => {
-        const a = await axios.get('http://localhost:4000/api/cart');
+        const a = await axios.get('http://192.168.0.243:4000/api/cart');
         setCart(a.data);
     } 
 
@@ -83,7 +83,7 @@ const Store = (props) => {
         }else{
             /*Repeated Value = Nothing || No Repeated Value = Update */
             if (filteredArray.length===0){
-                axios.post('http://localhost:4000/api/cart', {
+                axios.post('http://192.168.0.243:4000/api/cart', {
                     _id: id,
                     price: price,
                     product: product, 
@@ -124,10 +124,15 @@ const Store = (props) => {
 
     /*Update Qyt Product*/
      const updateQtyProduct = async (id, finalQtyValue) => {
-        await axios.put('http://localhost:4000/api/products/' + id, {
+        await axios.put('http://192.168.0.243:4000/api/products/' + id, {
                 quantity: finalQtyValue,
         });
         getProductsData();
+    }
+
+    const buttonProducts = (id, price, product, quantity) => {
+        newCart(id, price, product, quantity);
+        props.changeRefresh(true);
     }
 
   return (
@@ -142,7 +147,7 @@ const Store = (props) => {
         <div className='flex h-16'>
             <h2 className='font-bold h-5 w-full font-sans mt-8 ml-4 text-xl'>Categorías</h2>
             <div className='flex-grow px-8 text-lg py-4 relative'>
-                <a href="http://localhost:3000/pos/createcategory">
+                <a href="http://192.168.0.243:3000/pos/createcategory">
                 <div className='relative left-3 px-2 py-2 w-11 h-auto rounded-full bg-yellow-500 text-white'>
                     <PlusIcon className='pl-1 h-7 w-6 text-white hover:text-black focus:outline-none cursor-pointer'/>
                 </div>
@@ -153,10 +158,9 @@ const Store = (props) => {
             <div className='h-auto overflow-y-auto px-2'>
                 <div className='grid grid-cols-2 md:grid-cols-4 gap-4 pb-3'>{/* CSS Categories Copy*/}
                     {/* All Categories Button*/}
-                    <div role="button" className='select-none cursor-pointer transition-shadow overflow-hidden rounded-2xl bg-white shadow hover:shadow-lg' 
-                    onClick={() => setCategoryFilter('')}>
-                        <div className='px-2 py-7 text-right relative'>
-                            <PhotographIcon className='h-auto w-auto justify-center -mt-3'/> {/* Photo*/}
+                    <div className='select-none cursor-pointer overflow-hidden rounded-2xl bg-white' >
+                        <div className='px-2 py-7 text-right relative' onClick={() => setCategoryFilter('')}>
+                            <PhotographIcon className='h-auto w-auto justify-center -mt-3 transition-shadow shadow hover:shadow-lg'/> {/* Photo*/}
                         </div> 
                         <div className='flex pb-3 px-3 text-sm -mt-3'>
                             <p className='flex-grow truncate mr-1 font-bold font-lg text-center'>Todas las categorias</p>
@@ -164,15 +168,22 @@ const Store = (props) => {
                     </div> 
                     {/* Categories Mapping*/}
                     {category && category.map(c => 
-                    <div role="button" className='select-none cursor-pointer transition-shadow overflow-hidden rounded-2xl bg-white shadow hover:shadow-lg' key={c._id}
-                    onClick={() => setCategoryFilter(c.category)}>
+                    <div className='select-none cursor-pointer overflow-hidden rounded-2xl bg-white space-y-1' key={c._id}>
                     <div className='px-2 py-1 text-right relative'>
                         <button onClick={() => deleteCategories(c._id)}>
                             <TrashIcon className='h-auto w-6 text-black text-blue-gray-300 hover:text-red-500 focus:outline-none mt-1' />
                         </button>
                         {c.categoryImage ?
-                            <img src={'http://localhost:4000/' + c.categoryImage} alt="" className='object-contain h-24 w-48' />
-                        :   <PhotographIcon className='h-auto w-auto justify-center -mt-3'/> 
+                            <img 
+                                src={'http://192.168.0.243:4000/' + c.categoryImage} 
+                                alt="" 
+                                className='object-contain h-24 w-48 transition-shadow shadow hover:shadow-lg' 
+                                onClick={() => setCategoryFilter(c.category)}
+                            />
+                        :   <PhotographIcon 
+                                className='h-auto w-auto justify-center -mt-3 transition-shadow shadow hover:shadow-lg' 
+                                onClick={() => setCategoryFilter(c.category)}
+                            /> 
                         }
                     </div> 
                         <div className='flex pb-3 px-3 text-sm -mt-3'>
@@ -190,7 +201,7 @@ const Store = (props) => {
         <div className='flex h-16'>
             <h2 className='font-bold h-5 w-full font-sans mt-8 ml-4 text-xl'>Mis productos</h2>
             <div className='flex-grow px-8 text-lg py-4 relative'>
-                <a href="http://localhost:3000/pos/createproduct">
+                <a href="http://192.168.0.243:3000/pos/createproduct">
                 <div className='relative left-3 px-2 py-2 w-11 h-auto rounded-full bg-yellow-500 text-white'>
                     <PlusIcon className='pl-1 h-7 w-6 text-white hover:text-black focus:outline-none cursor-pointer'/>
                 </div>
@@ -216,25 +227,29 @@ const Store = (props) => {
                         }
                     }
                 }).map(p =>            
-                    <div role="button" className='select-none cursor-pointer transition-shadow overflow-hidden rounded-2xl bg-white shadow hover:shadow-lg' key={p._id}
-                    onClick={()=> {
-                        const function1 = newCart(p._id, p.price, p.product, p.quantity);
-                        const function2 = props.changeRefresh(true);
-                    }}>
+                    <div className='select-none cursor-pointer overflow-hidden rounded-2xl bg-white space-y-0.5' key={p._id}>
                         <div className='px-2 py-1 text-right relative'>
                             <button onClick={() => deleteProducts(p._id)}>
                                 <TrashIcon className='h-auto w-6 text-black text-blue-gray-300 hover:text-red-500 focus:outline-none mt-1'/>
                             </button>
                             {p.productsImage ?
-                                <img src={'http://localhost:4000/' + p.productsImage} alt="" className='object-contain h-24 w-48' />
-                            :   <PhotographIcon className='h-auto w-auto justify-center -mt-3'/> 
+                                <img 
+                                    src={'http://192.168.0.243:4000/' + p.productsImage} 
+                                    alt="" 
+                                    className='object-contain h-24 w-48 transition-shadow shadow hover:shadow-lg' 
+                                    onClick={()=> {buttonProducts(p._id, p.price, p.product, p.quantity);}}
+                                />
+                            :   <PhotographIcon 
+                                    className='h-auto w-auto justify-center -mt-3 transition-shadow shadow hover:shadow-lg'
+                                    onClick={()=> {buttonProducts(p._id, p.price, p.product, p.quantity);}}
+                                /> 
                             } 
                         </div>      
-                        <div className='flex pb-3 px-3 text-sm -mt-3'>
+                        <div className='flex pb-3 px-3 text-sm'>
                             <p className='flex-grow truncate mr-1 font-bold font-lg'>{p.product}</p>
                             <p className='nowrap font-semibold'>${p.price}</p>
                         </div>
-                        <div className='flex pb-3 px-3 text-sm -mt-3'>
+                        <div className='flex pb-1 px-3 text-sm '>
                             <p className='flex-grow truncate mr-1 font-bold font-lg'>Cantidad</p>
                             <p className='nowrap font-semibold'>{p.quantity}{p.units}</p>
                         </div>

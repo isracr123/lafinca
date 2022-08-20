@@ -21,6 +21,7 @@ import PrivateRoutes from './utils/PrivateRoutes'
 import PrivateRoutesTwo from './utils/PrivateRoutesTwo';
 import PrivateRoutesThree from './utils/PrivateRoutesThree';
 import PrivateRoutesFour from './utils/PrivateRoutesFour';
+import PrivateRoutesKitchen from './utils/PrivateRoutesKitchen';
 
 import {
   BrowserRouter,
@@ -62,7 +63,9 @@ function App() {
         </Route>
         <Route path="/editwaiterthree/:id" element={<WaiterThreeEdit />}/>
         {/* Kitchen */}
-        <Route path="/kitchen" element={<Kitchen />}/>
+        <Route element={<PrivateRoutesKitchen />}>
+          <Route path="/kitchen" element={<Kitchen />}/>
+        </Route>
         <Route path="/editkitchen/:id" element={<KitchenEdit />}/>
       </Routes>
     </BrowserRouter>

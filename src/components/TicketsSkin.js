@@ -8,14 +8,20 @@ import {Link} from 'react-router-dom'
 const TicketsSkin = () => {
 
   const [tickets, setTickets] = useState('');
+  const [repeater,setRepeater]=useState(0);
 
   useEffect(() => {
     getTickets();
   }, []);
 
+  useEffect(() => {
+    getTickets();
+    setTimeout(() => setRepeater(prevState=>prevState+1), 10000);
+  }, [repeater])
+
   /*Get Tickets*/
   const getTickets = async () => {
-    const t = await axios.get('http://localhost:4000/api/tickets');
+    const t = await axios.get('http://192.168.0.243:4000/api/tickets');
     setTickets(t.data);
   }
 

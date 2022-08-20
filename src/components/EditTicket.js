@@ -38,7 +38,7 @@ const EditTicket = () => {
 
     /*Get One Ticket*/
     const getTickets = async () => {
-        const t = await axios.get('http://localhost:4000/api/tickets/' + newid.id);
+        const t = await axios.get('http://192.168.0.243:4000/api/tickets/' + newid.id);
         setOneTicket(t.data);
     }
 
@@ -80,7 +80,7 @@ const EditTicket = () => {
 
     /*Update tickets*/
     const updateTickets = async () => {
-        await axios.put('http://localhost:4000/api/tickets/' + newid.id, {
+        await axios.put('http://192.168.0.243:4000/api/tickets/' + newid.id, {
             waiter: name,
             table: table,
             qty: qty,
@@ -91,12 +91,12 @@ const EditTicket = () => {
             pay: pay,
             change: change,                
         });
-        window.location.href='http://localhost:3000/pos/tickets';
+        window.location.href='http://192.168.0.243:3000/pos/tickets';
     }
 
   return (
-    <div className='fixed w-full h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-1 overflow-y-scroll bg-black'>
-    <div className='fixed bg-black w-full h-screen right-1 md:left-[550px] top-20 md:top-[150px] z-0 '>
+    <div className='scroll-auto w-full min-h-screen left-0 top-0 z-10 flex flex-wrap justify-center content-center p-1 overflow-y-scroll bg-black'>
+    <div className='min-h-screen bg-black md:w-1/4 z-0'>
         <div className='w-96 rounded-3xl bg-white shadow-xl overflow-hidden z-10 ' ref={componentRef}>
             <div className='text-left w-full text-sm p-6'>
             <div>  
@@ -220,14 +220,15 @@ const EditTicket = () => {
         <div className='w-96 rounded-3xl bg-black shadow-xl overflow-hidden z-10'>
             <div className='text-left w-full text-sm p-6'>
                 <div className='p-4 w-full space-y-2'>
-                    <button className='bg-yellow-500 text-black text-base px-4 py-3 rounded-2xl w-full focus:outline-none' onClick={()=>{
-                    const function1 = window.location.href='http://localhost:3000/pos/tickets';
+                    <button className='bg-yellow-500 text-black text-base px-4 py-3 rounded-2xl w-full focus:outline-none' 
+                    onClick={()=>{
+                        window.location.href='http://192.168.0.243:3000/pos/tickets';
                     }}>
                         X Cerrar
                     </button>
                     <button className='bg-yellow-500 text-white text-base px-4 py-3 rounded-2xl w-full focus:outline-none'
                     onClick={()=>{
-                        const function1 = updateTickets();
+                        updateTickets();
                     }}>
                         Actualizar
                     </button>

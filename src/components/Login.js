@@ -20,17 +20,20 @@ const Login = () => {
 
 
     const login = () => {
-        axios.post("http://localhost:4000/login", user)
+        axios.post("http://192.168.0.243:4000/login", user)
             .then(res => {
                 if (res.data.message === 'Logged In!!!'){
-                    if (user.email === 'admin'){
-                        window.location.href = 'http://localhost:3000/pos';
-                    }else if (user.email === 'waiterOne'){
-                        window.location.href = 'http://localhost:3000/waiter/';
-                    }else if (user.email === 'waiterTwo'){
-                        window.location.href = 'http://localhost:3000/waiterTwo/';
-                    }else if (user.email === 'waiterThree'){
-                        window.location.href = 'http://localhost:3000/waiterThree/';
+                    alert('Entraste');
+                    if (user.email === 'SuperAdmin'){
+                        window.location.href = 'http://192.168.0.243:3000/pos';
+                    }else if (user.email === 'M1'){
+                        window.location.href = 'http://192.168.0.243:3000/waiter/';
+                    }else if (user.email === 'M2'){
+                        window.location.href = 'http://192.168.0.243:3000/waiterTwo/';
+                    }else if (user.email === 'M3'){
+                        window.location.href = 'http://192.168.0.243:3000/waiterThree/';
+                    }else if (user.email === 'cocina'){
+                        window.location.href = 'http://192.168.0.243:3000/kitchen';
                     }else{
                         alert('Logged In')
                     }

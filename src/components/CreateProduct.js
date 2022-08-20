@@ -19,7 +19,7 @@ import axios from 'axios'
 
     /*Get categories*/
     const getCategoriesData = async () => {
-        const c = await axios.get('http://localhost:4000/api/categories');
+        const c = await axios.get('http://192.168.0.243:4000/api/categories');
         setCategory(c.data);
     }
 
@@ -40,7 +40,7 @@ import axios from 'axios'
             if (selectedFile.size <= 5200000){
                 axios({
                     method: "post",
-                    url: "http://localhost:4000/api/products",
+                    url: "http://192.168.0.243:4000/api/products",
                     data: bodyFormData,
                     headers: { "Content-Type": "multipart/form-data" },
                 })
@@ -53,7 +53,7 @@ import axios from 'axios'
                 console.log(response);
                 });
                 alert('Guardado'); 
-                window.location.href = 'http://localhost:3000/pos/';
+                window.location.href = 'http://192.168.0.243:3000/pos/';
                 
             }else{
                 alert('Solo se aceptan 1024 x 1024 o menor');
@@ -78,7 +78,7 @@ import axios from 'axios'
 
    return (
      <div className="bg-black absolute inset-0 flex flex-col space-y-16 items-center justify-center">
-        <a href="http://localhost:3000/pos/">
+        <a href="http://192.168.0.243:3000/pos/">
         <div className='flex flex-row justify-center items-center'>
             <p className='text-white'>Cerrar</p>   
             <XIcon className='h-6 w-10 text-white'/> 
