@@ -16,7 +16,7 @@ const CreateCategory = () => {
 
   /*Get Categories*/
   const getCategoriesData = async () => {
-    const a = await axios.get('http://192.168.0.243:4000/api/categories');
+    const a = await axios.get('http://192.168.0.10:4000/api/categories');
     setGetCategories(a.data);
   } 
 
@@ -48,7 +48,7 @@ const CreateCategory = () => {
 
                     axios({
                         method: "post",
-                        url: "http://192.168.0.243:4000/api/categories",
+                        url: "http://192.168.0.10:4000/api/categories",
                         data: bodyFormData,
                         headers: { "Content-Type": "multipart/form-data" },
                       })
@@ -59,16 +59,15 @@ const CreateCategory = () => {
                         .catch(function (response) {
                           //handle error
                           console.log(response);
-                        });
+                    });
                     alert('Guardado');
-                    window.location.href = 'http://192.168.0.243:3000/pos/';
                 }
             /*No categories*/
             }else if (getCategories === ''){
 
                 axios({
                     method: "post",
-                    url: "http://192.168.0.243:4000/api/categories",
+                    url: "http://192.168.0.10:4000/api/categories",
                     data: bodyFormData,
                     headers: { "Content-Type": "multipart/form-data" },
                 })
@@ -81,7 +80,6 @@ const CreateCategory = () => {
                   console.log(response);
                 });
                 alert('Guardado'); 
-                window.location.href = 'http://192.168.0.243:3000/pos/';
             }
         }else{
             alert('Solo se aceptan 1024 x 1024 o menor');
@@ -95,7 +93,7 @@ const CreateCategory = () => {
 
   return (
     <div className="bg-black absolute inset-0 flex flex-col space-y-14 items-center justify-center">
-        <a href="http://192.168.0.243:3000/pos/">
+        <a href="http://192.168.0.10:3000/pos/">
         <div className='flex flex-row justify-center items-center'>
             <p className='text-white'>Cerrar</p>   
             <XIcon className='h-6 w-10 text-white'/>

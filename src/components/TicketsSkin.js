@@ -21,7 +21,7 @@ const TicketsSkin = () => {
 
   /*Get Tickets*/
   const getTickets = async () => {
-    const t = await axios.get('http://192.168.0.243:4000/api/tickets');
+    const t = await axios.get('http://192.168.0.10:4000/api/tickets');
     setTickets(t.data);
   }
 

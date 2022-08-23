@@ -20,22 +20,22 @@ const Login = () => {
 
 
     const login = () => {
-        axios.post("http://192.168.0.243:4000/login", user)
+        axios.post("http://192.168.0.10:4000/login", user)
             .then(res => {
-                if (res.data.message === 'Logged In!!!'){
+                if (res.data.message === 'Entraste'){
                     alert('Entraste');
-                    if (user.email === 'SuperAdmin'){
-                        window.location.href = 'http://192.168.0.243:3000/pos';
+                    if (user.email === 'superadmin'){
+                        window.location.href = 'http://192.168.0.10:3000/pos';
                     }else if (user.email === 'M1'){
-                        window.location.href = 'http://192.168.0.243:3000/waiter/';
+                        window.location.href = 'http://192.168.0.10:3000/waiter/';
                     }else if (user.email === 'M2'){
-                        window.location.href = 'http://192.168.0.243:3000/waiterTwo/';
+                        window.location.href = 'http://192.168.0.10:3000/waiterTwo/';
                     }else if (user.email === 'M3'){
-                        window.location.href = 'http://192.168.0.243:3000/waiterThree/';
+                        window.location.href = 'http://192.168.0.10:3000/waiterThree/';
                     }else if (user.email === 'cocina'){
-                        window.location.href = 'http://192.168.0.243:3000/kitchen';
+                        window.location.href = 'http://192.168.0.10:3000/kitchen';
                     }else{
-                        alert('Logged In')
+                        alert('Usuario no válido')
                     }
                 }else{
                     alert('Usuario y contraseña incorrectos')
@@ -52,7 +52,6 @@ const Login = () => {
                 <div className="flex justify-center items-center flex-wrap h-full g-6 text-gray-800">
                 
                 <div className="md:w-8/12 lg:w-5/12 lg:ml-20">
-                    <form>
                     <div className="mb-6">
                         <input
                         type="text"
@@ -75,13 +74,6 @@ const Login = () => {
                         autoComplete="on"
                         />
                     </div>
-
-                    {/* <div className="flex justify-between items-center mb-6">
-                        <a
-                        href="#!"
-                        className="text-yellow-600 hover:text-yellow-700 focus:text-yellow-700 active:text-yellow-800 duration-200 transition ease-in-out">
-                        Olvidaste contraseña?</a>
-                    </div> */}
                     <button
                         type="submit"
                         className="inline-block px-7 py-3 bg-yellow-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-yellow-700 hover:shadow-lg focus:bg-yellow-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-yellow-800 active:shadow-lg transition duration-150 ease-in-out w-full"
@@ -91,7 +83,6 @@ const Login = () => {
                     >
                         Entrar
                     </button>
-                    </form>
                 </div>
                 </div>
             </div>

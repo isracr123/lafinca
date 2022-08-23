@@ -38,7 +38,7 @@ const EditTicket = () => {
 
     /*Get One Ticket*/
     const getTickets = async () => {
-        const t = await axios.get('http://192.168.0.243:4000/api/tickets/' + newid.id);
+        const t = await axios.get('http://192.168.0.10:4000/api/tickets/' + newid.id);
         setOneTicket(t.data);
     }
 
@@ -80,7 +80,7 @@ const EditTicket = () => {
 
     /*Update tickets*/
     const updateTickets = async () => {
-        await axios.put('http://192.168.0.243:4000/api/tickets/' + newid.id, {
+        await axios.put('http://192.168.0.10:4000/api/tickets/' + newid.id, {
             waiter: name,
             table: table,
             qty: qty,
@@ -91,7 +91,13 @@ const EditTicket = () => {
             pay: pay,
             change: change,                
         });
-        window.location.href='http://192.168.0.243:3000/pos/tickets';
+        window.location.href='http://192.168.0.10:3000/pos/tickets';
+    }
+
+    /*Delete Ticket | Boton eliminar en tickets*/
+    const deleteTicket = async () => {
+        await axios.delete('http://192.168.0.10:4000/api/tickets/' + newid.id);
+        window.location.href='http://192.168.0.10:3000/pos/tickets';
     }
 
   return (
@@ -222,9 +228,13 @@ const EditTicket = () => {
                 <div className='p-4 w-full space-y-2'>
                     <button className='bg-yellow-500 text-black text-base px-4 py-3 rounded-2xl w-full focus:outline-none' 
                     onClick={()=>{
-                        window.location.href='http://192.168.0.243:3000/pos/tickets';
+                        window.location.href='http://192.168.0.10:3000/pos/tickets';
                     }}>
                         X Cerrar
+                    </button>
+                    <button className='bg-red-500 text-white text-base px-4 py-3 rounded-2xl w-full focus:outline-none' 
+                    onClick={deleteTicket /*Boton eliminar en tickets*/}>
+                        Eliminar
                     </button>
                     <button className='bg-yellow-500 text-white text-base px-4 py-3 rounded-2xl w-full focus:outline-none'
                     onClick={()=>{
