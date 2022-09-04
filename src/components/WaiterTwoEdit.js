@@ -25,28 +25,28 @@ const WaiterTwoEdit = () => {
 
   /*Get One Waiter*/
   const getOneWaiter = async (id) => {
-    const w = await axios.get('http://192.168.0.10:4000/api/waiterTwo/' + id);
+    const w = await axios.get('http://192.168.0.3:4000/api/waiterTwo/' + id);
     setOldProduct(w.data.products);
     setOldQty(w.data.qty);
   }
 
   /*Update Waiter*/
   const updateOneWaiter = async () => {
-    await axios.put('http://192.168.0.10:4000/api/waiterTwo/' + id, {
+    await axios.put('http://192.168.0.3:4000/api/waiterTwo/' + id, {
         qty: qty || oldQty,
         products: product || oldProduct,
     });
-    window.location.href='http://192.168.0.10:3000/waiterTwo';
+    window.location.href='http://192.168.0.3:3000/waiterTwo';
  }
  
   /*Delete Products*/
   const deleteWaiter = async () => {
-    await axios.delete('http://192.168.0.10:4000/api/waiterTwo/' + id);
-    window.location.href='http://192.168.0.10:3000/waiterTwo';
+    await axios.delete('http://192.168.0.3:4000/api/waiterTwo/' + id);
+    window.location.href='http://192.168.0.3:3000/waiterTwo';
   }
 
   const CloseFunction = () => {
-    window.location.href="http://192.168.0.10:3000/waiterTwo";
+    window.location.href="http://192.168.0.3:3000/waiterTwo";
   }
 
 

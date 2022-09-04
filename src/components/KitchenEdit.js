@@ -38,13 +38,13 @@ const KitchenEdit = () => {
 
     /*Get Autocomplete Data*/
     const AutocompleteData = async () => {
-        const p = await axios.get('http://192.168.0.10:4000/api/products');
+        const p = await axios.get('http://192.168.0.3:4000/api/products');
         setAutocomplete(p.data);
     } 
 
     /*Get One Ticket*/
     const getKitchen = async () => {
-        const k = await axios.get('http://192.168.0.10:4000/api/kitchen/' + newid.id);
+        const k = await axios.get('http://192.168.0.3:4000/api/kitchen/' + newid.id);
         setOneKitchen(k.data);
         setQty(k.data.qty);
         setProducts(k.data.products);
@@ -77,29 +77,29 @@ const KitchenEdit = () => {
 
     /*Update kitchen with URL*/
     const updateKitchen = async () => {
-        await axios.put('http://192.168.0.10:4000/api/kitchen/'+ newid.id,{
+        await axios.put('http://192.168.0.3:4000/api/kitchen/'+ newid.id,{
             waiter: name,
             table: table,
             qty: qty,
             products: products          
         });
-        window.location.href = 'http://192.168.0.10:3000/kitchen'
+        window.location.href = 'http://192.168.0.3:3000/kitchen'
         alert('Actualizado');
     }
 
     const updateWithoutAlerts = async () => {
-        await axios.put('http://192.168.0.10:4000/api/kitchen/'+ newid.id,{
+        await axios.put('http://192.168.0.3:4000/api/kitchen/'+ newid.id,{
             waiter: name,
             table: table,
             qty: qty,
             products: products          
         });
-        window.location.href = 'http://192.168.0.10:3000/editkitchen/' + newid.id ;
+        window.location.href = 'http://192.168.0.3:3000/editkitchen/' + newid.id ;
     }
 
     /*Create tickets*/
     const createTickets = async () => {
-        await axios.post('http://192.168.0.10:4000/api/tickets', {
+        await axios.post('http://192.168.0.3:4000/api/tickets', {
             waiter: name,
             table: table,
             qty: qty,
@@ -110,18 +110,18 @@ const KitchenEdit = () => {
             pay: 0,
             change: 0,                 
         });
-        window.location.href='http://192.168.0.10:3000/kitchen';
+        window.location.href='http://192.168.0.3:3000/kitchen';
         deleteOneKitchen();
     }
 
     /*Close Kitchen*/
     const CloseFunction = () => {
-        window.location.href="http://192.168.0.10:3000/kitchen";
+        window.location.href="http://192.168.0.3:3000/kitchen";
     }
 
     /*Delete Products*/
     const deleteOneKitchen = async () => {
-        await axios.delete('http://192.168.0.10:4000/api/kitchen/' + newid.id);
+        await axios.delete('http://192.168.0.3:4000/api/kitchen/' + newid.id);
     }
     
     /*Plus button Functionality*/

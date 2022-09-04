@@ -20,13 +20,13 @@ const EditCategory = () => {
 
     /*Get categories*/
     const getCategoriesData = async () => {
-        const c = await axios.get('http://192.168.0.10:4000/api/categories');
+        const c = await axios.get('http://192.168.0.3:4000/api/categories');
         setCategory(c.data);
     }
 
     /*Get categoryData*/
     const getCategoryData = async () => {
-        const c = await axios.get('http://192.168.0.10:4000/api/categories/' + newid.id);
+        const c = await axios.get('http://192.168.0.3:4000/api/categories/' + newid.id);
         setActualCategory(c.data.category);
     }
 
@@ -40,11 +40,11 @@ const EditCategory = () => {
         const filteredArray = array.filter(array => array===uno)
         /*Repeated Value = Nothing || No Repeated Value = Update */
         if (filteredArray.length===0){
-            await axios.put('http://192.168.0.10:4000/api/categories/'+ newid.id,{
+            await axios.put('http://192.168.0.3:4000/api/categories/'+ newid.id,{
             category: newCategory,
             });
             alert('Actualizado');
-            window.location.href = 'http://192.168.0.10:3000/pos/';
+            window.location.href = 'http://192.168.0.3:3000/pos/';
         }else{
             alert("Categoria repetida, elige otro nombre");
         }
@@ -52,7 +52,7 @@ const EditCategory = () => {
 
   return (
     <div className="bg-black absolute inset-0 flex flex-col space-y-6 items-center justify-center">
-        <a href="http://192.168.0.10:3000/pos/">
+        <a href="http://192.168.0.3:3000/pos/">
         <div className='flex flex-row justify-center items-center'>
             <p className='text-white'>Cerrar</p>   
             <XIcon className='h-6 w-10 text-white'/>

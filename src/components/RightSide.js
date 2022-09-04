@@ -45,13 +45,13 @@ const RightSide = (props) => {
 
   /*Get Cart*/
   const getCartData = async () => {
-    const a = await axios.get('http://192.168.0.10:4000/api/cart');
+    const a = await axios.get('http://192.168.0.3:4000/api/cart');
     setCart(a.data);
   }
 
   /*Get Total*/
   const getTotalData = async () => {
-    const t = await axios.get('http://192.168.0.10:4000/api/total');
+    const t = await axios.get('http://192.168.0.3:4000/api/total');
     const data = t.data;
     if (data.length > 0){
       setTotalId(t.data[0]._id);
@@ -64,7 +64,7 @@ const RightSide = (props) => {
   /*Create Total*/
   const addTotal = () => {
     if (totalLength === 0){
-      axios.post('http://192.168.0.10:4000/api/total', {
+      axios.post('http://192.168.0.3:4000/api/total', {
         total: total,
         pay: pago,
         change: cambio, 
@@ -76,7 +76,7 @@ const RightSide = (props) => {
 
   /*Update Total*/
   const newTotal = async (id) => {
-    await axios.put('http://192.168.0.10:4000/api/total/' + id, {
+    await axios.put('http://192.168.0.3:4000/api/total/' + id, {
       total: total,
       pay: pago,
       change: cambio, 
@@ -102,7 +102,7 @@ const RightSide = (props) => {
 
   /*Delete Cart*/
   const deleteCart = async (id, qty) => {
-    await axios.delete('http://192.168.0.10:4000/api/cart/' + id);
+    await axios.delete('http://192.168.0.3:4000/api/cart/' + id);
     updateQtyProduct(id, qty);
     props.changePro(true);
     getCartData();
@@ -110,7 +110,7 @@ const RightSide = (props) => {
 
   /*Update Qyt Product*/
   const updateQtyProduct = async (id, finalQtyValue) => {
-    await axios.put('http://192.168.0.10:4000/api/products/' + id, {
+    await axios.put('http://192.168.0.3:4000/api/products/' + id, {
             quantity: finalQtyValue,
     });
   }
@@ -123,7 +123,7 @@ const RightSide = (props) => {
       props.changeRefreshQty(true);
       props.changeQty(qty);
     }else{
-      await axios.put('http://192.168.0.10:4000/api/cart/'+ id,{
+      await axios.put('http://192.168.0.3:4000/api/cart/'+ id,{
       sum: sum + 1,
       });
       props.changeIdQty(id);
@@ -137,7 +137,7 @@ const RightSide = (props) => {
   /*Update rest*/
   const addRest = async (id, sum, qyt) => {
     if (sum > 1){
-      await axios.put('http://192.168.0.10:4000/api/cart/'+ id,{
+      await axios.put('http://192.168.0.3:4000/api/cart/'+ id,{
         sum: sum - 1,
       });
       props.changeIdQty(id);
@@ -213,7 +213,7 @@ const RightSide = (props) => {
             </div>
             <button className='text-white rounded-2xl text-lg w-full py-3 focus:outline-none bg-yellow-200 hover:bg-yellow-600 active:bg-yellow-200'
             onClick={()=> {
-              const function1 = window.location.href='http://192.168.0.10:3000/pos/receipt';
+              const function1 = window.location.href='http://192.168.0.3:3000/pos/receipt';
               const function2 = addTotal();
             }}>
               Enviar

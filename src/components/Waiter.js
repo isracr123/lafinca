@@ -1,7 +1,7 @@
 import React from 'react'
 import Moment from 'react-moment'
 import {useState, useEffect} from 'react'
-import { PlusIcon, MinusIcon } from '@heroicons/react/solid'
+import { PlusIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import Autocomplete from 'react-autocomplete';
 import {Link} from 'react-router-dom';
@@ -10,10 +10,20 @@ console.warn = () => {}
 
 const Waiter = () => {
 
+  /*Refresh*/
+  const [refresh, setRefresh] = useState(false);
+
   useEffect(() => {
     getProductsData();
     getWaiters();
+    getPos();
   }, []);
+
+  useEffect(() => {
+    setRefresh(false);
+    getWaiters();
+    getPos();
+  }, [refresh]);
 
   const date = new Date();
 
@@ -22,6 +32,7 @@ const Waiter = () => {
   const [table, setTable] = useState(1);
   const [qty, setQty] = useState(1);
   const [products, setProducts] = useState('');
+  const number = 1;
 
   /* Create Kitchen Variables*/
   const [arrayProducts, setArrayProducts] = useState('');
@@ -35,42 +46,37 @@ const Waiter = () => {
 
   /*Inicio*/
   const [start, setStart] = useState(false);
+
+  /*Products POS*/
+  const [pos, setPos] = useState('');
  
   /*Get Products*/
   const getProductsData = async () => {
-    const p = await axios.get('http://192.168.0.10:4000/api/products');
+    const p = await axios.get('http://192.168.0.3:4000/api/products');
     setProducts(p.data);
   } 
 
   /*Get Waiters*/
   const getWaiters = async () => {
-    const w = await axios.get('http://192.168.0.10:4000/api/waiter');
+    const w = await axios.get('http://192.168.0.3:4000/api/waiter');
     setWaiter(w.data);
+    setArrayProducts(w.data.map(w => w.products));
+    setArrayQty(w.data.map(w => w.qty));
   } 
 
-  /*Sum products*/
-  const sumProducts = () => {
-    if (qty >= 0) {
-        setQty(qty+1);
-    }else{
-    }
-  }
-
-  /*Rest Products*/
-  const restProducts = () => {
-    if (qty > 0) {
-        setQty(qty-1);
-    }else{
-    }
-  }
+   /*Get Pos*/
+    const getPos = async () => {
+        const p = await axios.get('http://192.168.0.3:4000/api/products');
+        setPos(p.data);
+    } 
 
   /*Create Waiter data*/
   const createWaiter = () => {
-    axios.post('http://192.168.0.10:4000/api/waiter', {
+    axios.post('http://192.168.0.3:4000/api/waiter', {
                 qty: qty,
                 products: value
     });
-    getWaiters();
+    setRefresh(true);
   }
   
   /*Plus button Functionality*/
@@ -82,42 +88,70 @@ const Waiter = () => {
     }
   }
 
-  /*Kitchen Data*/
-  const kitchenData = () => {
-    const products = waiter.map (w => w.products);
-    const qty = waiter.map (w => w.qty);
-    setArrayProducts(products);
-    setArrayQty(qty);
-  }
-
   /*Create Kitchen Data*/
   const createKitchen = () => {
-    if (arrayProducts === ''){
-        console.log(arrayProducts);
-        console.log(arrayQty);
-        kitchenData();
-    }else{
-        axios.post('http://192.168.0.10:4000/api/kitchen', {
-        date: date,
-        waiter: name,
-        table: table, 
-        qty: arrayQty,
-        products: arrayProducts,
-        });
+    getPos();
+    if (arrayProducts.length === 0 ){
+        getWaiters();
+    }else if (arrayProducts.length > 0){
         alert('Enviado');
+        postKitchen();
+        findProducts();
+        functionsDeleteAndRefresh();
     }
+  }
+
+  const functionsDeleteAndRefresh = () => {
+    deleteAllWaiter();
+    getWaiters();
+  }
+
+  const postKitchen = () => {
+    axios.post('http://192.168.0.3:4000/api/kitchen', {
+            date: date,
+            waiter: name,
+            table: table, 
+            qty: arrayQty,
+            products: arrayProducts,
+    });
   }
 
   /*Delete All Waiter | Borrado completo de mesero*/
   const deleteAllWaiter = async () => {
-    await axios.delete('http://192.168.0.10:4000/api/waiter');
+    await axios.delete('http://192.168.0.3:4000/api/waiter');
   }
 
   /*Functions when we send it "Enviar" button | Borrado completo de mesero*/
   const SendFunctions = () => {
-    deleteAllWaiter();
     createKitchen();
-    getWaiters();
+  }
+
+  /*Update Qty in pos*/
+  const findProducts = () => {
+    const posData = pos.map( p => p.product );
+    arrayProducts.forEach((nameProduct, indexOne) => {
+        posData.forEach((namePos, indexTwo) => {
+            if (nameProduct === namePos){
+                const id = pos[indexTwo]._id;
+                const qty = pos[indexTwo].quantity;
+                return updateQty(id, indexOne, qty, nameProduct);
+            }else if (nameProduct !== namePos){
+                return console.log('false')
+            }
+        });
+    });
+  }
+
+
+  const updateQty = async (id, indexOne, qty, nameProduct) => {
+    const qtyUpdate = qty - arrayQty[indexOne];
+    if (qtyUpdate >= 0){
+        await axios.put('http://192.168.0.3:4000/api/products/'+ id,{
+        quantity: qtyUpdate,
+        });
+    }else if (qtyUpdate < 0){
+        alert('No hay suficiente producto de: ' + nameProduct);
+    }
   }
 
   return (
@@ -132,7 +166,7 @@ const Waiter = () => {
             </div>
             <div className='flex mt-4 text-xs'>
                 <div className='flex-grow'>
-                    No: 121232
+                    No: {number}
                 </div>
                 <div>
                     <Moment format='MMMM Do YYYY, h:mm:ss a'>{date}</Moment>
@@ -160,7 +194,7 @@ const Waiter = () => {
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-center flex-col'>
-                                                <p className='w-5 border-2 border-black'>
+                                                <p className='w-6 border-2 border-black'>
                                                     {w.qty}
                                                 </p>
                                             </td>
@@ -188,19 +222,7 @@ const Waiter = () => {
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-center flex-col'>
-                                                <div className='space-y-10'>
-                                                    <button className="absolute left-4 md:left-[200px] lg:left-[510px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                    onClick={() => {sumProducts()}}>
-                                                        <PlusIcon className="h-2 w-2 text-white"/>
-                                                    </button>
-                                                    <button className="absolute  left-4 md:left-[200px] lg:left-[510px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                    onClick={() => {restProducts()}}>
-                                                        <MinusIcon className="h-2 w-2 text-white"/>
-                                                    </button>
-                                                </div>
-                                                <p className='w-5 border-2 border-black'>
-                                                    {qty}
-                                                </p>
+                                                <input className='w-6 border-2 border-black' defaultValue={qty} onChange={e => setQty(e.target.value)}/>
                                             </td>
                                         </tr>
                                     </tbody>

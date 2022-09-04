@@ -42,24 +42,24 @@ const Receipt = () => {
 
     /*Get Cart*/
     const getCartData = async () => {
-        const a = await axios.get('http://192.168.0.10:4000/api/cart');
+        const a = await axios.get('http://192.168.0.3:4000/api/cart');
         setCart(a.data);
     }
     
     /*Get Total*/
     const getTotalData = async () => {
-        const t = await axios.get('http://192.168.0.10:4000/api/total');
+        const t = await axios.get('http://192.168.0.3:4000/api/total');
         setTotalData(t.data);
     } 
 
     /*Delete Products*/
     const deleteTotal = async (id) => {
-        await axios.delete('http://192.168.0.10:4000/api/total/' + id);
+        await axios.delete('http://192.168.0.3:4000/api/total/' + id);
     }
 
     /*Delete All Cart*/
     const deleteAllCart = async () => {
-        await axios.delete('http://192.168.0.10:4000/api/cart/');
+        await axios.delete('http://192.168.0.3:4000/api/cart/');
     }
 
     /*Create tickets*/
@@ -67,7 +67,7 @@ const Receipt = () => {
         if (table === 0 || name === ''){
             alert('Completar todos los campos');
         }else{
-            axios.post('http://192.168.0.10:4000/api/tickets', {
+            axios.post('http://192.168.0.3:4000/api/tickets', {
                 date: date,
                 waiter: name,
                 table: table,
@@ -79,7 +79,7 @@ const Receipt = () => {
                 pay: pay,
                 change: change,
             });
-            window.location.href='http://192.168.0.10:3000/pos/';
+            window.location.href='http://192.168.0.3:3000/pos/';
             deleteTotal(id);
             deleteAllCart();
         }
@@ -174,7 +174,7 @@ const Receipt = () => {
                     <div className='space-y-2'>
                         {totalData && totalData.map(t =><div key={t._id + 2}>
                         <button className='bg-yellow-500 text-black text-base px-4 py-3 rounded-2xl w-full focus:outline-none' onClick={()=>{
-                        const function1 = window.location.href='http://192.168.0.10:3000/pos/';
+                        const function1 = window.location.href='http://192.168.0.3:3000/pos/';
                         const function2 = deleteTotal(t._id);
                         }}>
                         X Cerrar

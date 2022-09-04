@@ -7,7 +7,7 @@ import {Link} from 'react-router-dom'
 
 const Kitchen = () => {
 
-  const [kitchen, setKitchen] = useState('');
+  const [kitchen, setKitchen] = useState([]);
   const [repeater,setRepeater]=useState(0);
 
   useEffect(() => {
@@ -16,13 +16,14 @@ const Kitchen = () => {
 
   useEffect(() => {
     getKitchen();
-    setTimeout(() => setRepeater(prevState=>prevState+1), 10000);
+    setTimeout(() => setRepeater(prevState=>prevState+1), 1000);
   }, [repeater])
 
 
   /*Get Tickets*/
   const getKitchen = async () => {
-    const k = await axios.get('http://192.168.0.10:4000/api/kitchen');
+
+    const k = await axios.get('http://192.168.0.3:4000/api/kitchen');
     setKitchen(k.data);
   }
 
