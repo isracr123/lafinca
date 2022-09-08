@@ -23,7 +23,7 @@ const Kitchen = () => {
   /*Get Tickets*/
   const getKitchen = async () => {
 
-    const k = await axios.get('http://192.168.0.3:4000/api/kitchen');
+    const k = await axios.get('http://192.168.1.175:4000/api/kitchen');
     setKitchen(k.data);
   }
 

@@ -52,13 +52,13 @@ const Waiter = () => {
  
   /*Get Products*/
   const getProductsData = async () => {
-    const p = await axios.get('http://192.168.0.3:4000/api/products');
+    const p = await axios.get('http://192.168.1.175:4000/api/products');
     setProducts(p.data);
   } 
 
   /*Get Waiters*/
   const getWaiters = async () => {
-    const w = await axios.get('http://192.168.0.3:4000/api/waiter');
+    const w = await axios.get('http://192.168.1.175:4000/api/waiter');
     setWaiter(w.data);
     setArrayProducts(w.data.map(w => w.products));
     setArrayQty(w.data.map(w => w.qty));
@@ -66,13 +66,13 @@ const Waiter = () => {
 
    /*Get Pos*/
     const getPos = async () => {
-        const p = await axios.get('http://192.168.0.3:4000/api/products');
+        const p = await axios.get('http://192.168.1.175:4000/api/products');
         setPos(p.data);
     } 
 
   /*Create Waiter data*/
   const createWaiter = () => {
-    axios.post('http://192.168.0.3:4000/api/waiter', {
+    axios.post('http://192.168.1.175:4000/api/waiter', {
                 qty: qty,
                 products: value
     });
@@ -94,9 +94,9 @@ const Waiter = () => {
     if (arrayProducts.length === 0 ){
         getWaiters();
     }else if (arrayProducts.length > 0){
-        alert('Enviado');
+        repeatedValue();
         postKitchen();
-        findProducts();
+        alert('Enviado');
         functionsDeleteAndRefresh();
     }
   }
@@ -107,7 +107,7 @@ const Waiter = () => {
   }
 
   const postKitchen = () => {
-    axios.post('http://192.168.0.3:4000/api/kitchen', {
+    axios.post('http://192.168.1.175:4000/api/kitchen', {
             date: date,
             waiter: name,
             table: table, 
@@ -118,23 +118,52 @@ const Waiter = () => {
 
   /*Delete All Waiter | Borrado completo de mesero*/
   const deleteAllWaiter = async () => {
-    await axios.delete('http://192.168.0.3:4000/api/waiter');
+    await axios.delete('http://192.168.1.175:4000/api/waiter');
   }
 
   /*Functions when we send it "Enviar" button | Borrado completo de mesero*/
   const SendFunctions = () => {
     createKitchen();
+    window.location.href = "http://192.168.1.175:3000/waiter";
   }
 
   /*Update Qty in pos*/
-  const findProducts = () => {
+  const repeatedValue = () => {
+    const arr1 = arrayProducts;
+    const arr2 = arrayQty;
+
+    const obj = {};
+
+    arr1.forEach((element, index) => {
+        
+        if (obj[element]){
+            obj[element] = Number(obj[element]) + Number(arr2[index]);
+        }else{
+            obj[element] = Number(arr2[index]);
+        }
+    });
+
+    let newArrayProducts = arrayProducts.filter((nameProduct, index) => {
+        return arrayProducts.indexOf(nameProduct) === index;
+    });
+
+    const listQty = {};
+
+    newArrayProducts.forEach((element, index) => {
+        listQty[index] = obj[element];
+    });
+
+    findProducts(newArrayProducts, listQty);
+  }
+
+  const findProducts = (newArrayProducts, listQty) => {
     const posData = pos.map( p => p.product );
-    arrayProducts.forEach((nameProduct, indexOne) => {
+    newArrayProducts.forEach((nameProduct, indexOne) => {
         posData.forEach((namePos, indexTwo) => {
             if (nameProduct === namePos){
                 const id = pos[indexTwo]._id;
                 const qty = pos[indexTwo].quantity;
-                return updateQty(id, indexOne, qty, nameProduct);
+                return updateQty(id, indexOne, qty, nameProduct, listQty);
             }else if (nameProduct !== namePos){
                 return console.log('false')
             }
@@ -143,10 +172,10 @@ const Waiter = () => {
   }
 
 
-  const updateQty = async (id, indexOne, qty, nameProduct) => {
-    const qtyUpdate = qty - arrayQty[indexOne];
+  const updateQty = async (id, indexOne, qty, nameProduct, listQty) => {
+    const qtyUpdate = qty - listQty[indexOne];
     if (qtyUpdate >= 0){
-        await axios.put('http://192.168.0.3:4000/api/products/'+ id,{
+        await axios.put('http://192.168.1.175:4000/api/products/'+ id,{
         quantity: qtyUpdate,
         });
     }else if (qtyUpdate < 0){

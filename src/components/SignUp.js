@@ -21,7 +21,7 @@ const SignUp = () => {
     const register = () => {
         const { email, password, confirmPassword } = user;
         if (email && password && (password === confirmPassword)) {
-            axios.post("http://192.168.0.3:4000/register", user).then(res => { console.log(res); });
+            axios.post("http://192.168.1.175:4000/register", user).then(res => { console.log(res); });
         } else {
             alert("Completa todos los campos");
         }

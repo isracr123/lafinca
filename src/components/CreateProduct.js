@@ -19,7 +19,7 @@ import axios from 'axios'
 
     /*Get categories*/
     const getCategoriesData = async () => {
-        const c = await axios.get('http://192.168.0.3:4000/api/categories');
+        const c = await axios.get('http://192.168.1.175:4000/api/categories');
         setCategory(c.data);
     }
 
@@ -40,7 +40,7 @@ import axios from 'axios'
             if (selectedFile.size <= 5200000){
                 axios({
                     method: "post",
-                    url: "http://192.168.0.3:4000/api/products",
+                    url: "http://192.168.1.175:4000/api/products",
                     data: bodyFormData,
                     headers: { "Content-Type": "multipart/form-data" },
                 })
@@ -62,21 +62,21 @@ import axios from 'axios'
             alert('Solo se aceptan formatos JPEG, JPG, PNG');
         }
 
-        /* axios.post('http://192.168.0.3:4000/api/products', {
+        /* axios.post('http://192.168.1.175:4000/api/products', {
                 category: categoryPro,
                 price: pricePro,
                 product: productPro, 
                 quantity: qtyPro,
                 units: unitsPro,
         });
-        window.location.href = 'http://192.168.0.3:3000/pos/'; */
+        window.location.href = 'http://192.168.1.175:3000/pos/'; */
     }
 
 
 
    return (
      <div className="bg-black absolute inset-0 flex flex-col space-y-16 items-center justify-center">
-        <a href="http://192.168.0.3:3000/pos/">
+        <a href="http://192.168.1.175:3000/pos/">
         <div className='flex flex-row justify-center items-center'>
             <p className='text-white'>Cerrar</p>   
             <XIcon className='h-6 w-10 text-white'/> 
@@ -186,6 +186,7 @@ import axios from 'axios'
                             onChange={(event) => {setUnitsPro(event.target.value)}}>
                             <option>Elige</option>
                             <option>Pz</option>
+                            <option>Gr</option>
                             <option>Kg</option>
                             <option>Lt</option>
                         </select>

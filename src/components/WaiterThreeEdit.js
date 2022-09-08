@@ -25,28 +25,28 @@ const WaiterThreeEdit = () => {
 
   /*Get One Waiter*/
   const getOneWaiter = async (id) => {
-    const w = await axios.get('http://192.168.0.3:4000/api/waiterThree/' + id);
+    const w = await axios.get('http://192.168.1.175:4000/api/waiterThree/' + id);
     setOldProduct(w.data.products);
     setOldQty(w.data.qty);
   }
 
   /*Update Waiter*/
   const updateOneWaiter = async () => {
-    await axios.put('http://192.168.0.3:4000/api/waiterThree/' + id, {
+    await axios.put('http://192.168.1.175:4000/api/waiterThree/' + id, {
         qty: qty || oldQty,
         products: product || oldProduct,
     });
-    window.location.href='http://192.168.0.3:3000/waiterThree';
+    window.location.href='http://192.168.1.175:3000/waiterThree';
  }
  
   /*Delete Products*/
   const deleteWaiter = async () => {
-    await axios.delete('http://192.168.0.3:4000/api/waiterThree/' + id);
-    window.location.href='http://192.168.0.3:3000/waiterThree';
+    await axios.delete('http://192.168.1.175:4000/api/waiterThree/' + id);
+    window.location.href='http://192.168.1.175:3000/waiterThree';
   }
 
   const CloseFunction = () => {
-    window.location.href="http://192.168.0.3:3000/waiterThree";
+    window.location.href="http://192.168.1.175:3000/waiterThree";
   }
 
 

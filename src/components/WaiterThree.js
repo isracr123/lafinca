@@ -38,13 +38,13 @@ const WaiterThree = () => {
  
   /*Get Products*/
   const getProductsData = async () => {
-    const p = await axios.get('http://192.168.0.3:4000/api/products');
+    const p = await axios.get('http://192.168.1.175:4000/api/products');
     setProducts(p.data);
   } 
 
   /*Get Waiters*/
   const getWaiters = async () => {
-    const w = await axios.get('http://192.168.0.3:4000/api/waiterThree');
+    const w = await axios.get('http://192.168.1.175:4000/api/waiterThree');
     setWaiter(w.data);
   } 
 
@@ -66,7 +66,7 @@ const WaiterThree = () => {
 
   /*Create Waiter data*/
   const createWaiter = () => {
-    axios.post('http://192.168.0.3:4000/api/waiterThree', {
+    axios.post('http://192.168.1.175:4000/api/waiterThree', {
                 qty: qty,
                 products: value
     });
@@ -97,7 +97,7 @@ const WaiterThree = () => {
         console.log(arrayQty);
         kitchenData();
     }else{
-        axios.post('http://192.168.0.3:4000/api/kitchen', {
+        axios.post('http://192.168.1.175:4000/api/kitchen', {
         date: date,
         waiter: name,
         table: table, 
@@ -110,7 +110,7 @@ const WaiterThree = () => {
 
   /*Delete All Waiter | Borrado completo de mesero*/
   const deleteAllWaiter = async () => {
-    await axios.delete('http://192.168.0.3:4000/api/waiterThree');
+    await axios.delete('http://192.168.1.175:4000/api/waiterThree');
   }
 
   /*Functions when we send it "Enviar" button | Borrado completo de mesero*/

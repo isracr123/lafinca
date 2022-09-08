@@ -30,7 +30,7 @@ const EditProducts = () => {
     
     /*Get Products*/
     const getProductData = async (id) => {
-        const p = await axios.get('http://192.168.0.3:4000/api/products/' + id);
+        const p = await axios.get('http://192.168.1.175:4000/api/products/' + id);
         setOldCategoryPro(p.data.category);
         setOldPricePro(p.data.price);
         setOldProductPro(p.data.product);
@@ -40,13 +40,13 @@ const EditProducts = () => {
 
     /*Get categories*/
     const getCategoriesData = async () => {
-        const c = await axios.get('http://192.168.0.3:4000/api/categories');
+        const c = await axios.get('http://192.168.1.175:4000/api/categories');
         setCategory(c.data);
     }
 
     /*Update Products*/
     const updateProducts = async () => {
-        await axios.put('http://192.168.0.3:4000/api/products/' + newid.id, {
+        await axios.put('http://192.168.1.175:4000/api/products/' + newid.id, {
                 category: categoryPro || oldCategoryPro,
                 price: pricePro || oldPricePro,
                 product: productPro || oldProductPro, 
@@ -58,7 +58,7 @@ const EditProducts = () => {
 
   return (
     <div className="bg-black absolute inset-0 flex flex-col space-y-6 items-center justify-center">
-    <a href="http://192.168.0.3:3000/pos/">
+    <a href="http://192.168.1.175:3000/pos/">
     <div className='flex flex-row justify-center items-center'>
         <p className='text-white'>Cerrar</p>   
         <XIcon className='h-6 w-10 text-white'/> 
@@ -162,7 +162,7 @@ const EditProducts = () => {
         <div className="md:flex md:items-center">
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
-            <a href="http://192.168.0.3:3000/pos/">
+            <a href="http://192.168.1.175:3000/pos/">
                 <button className="shadow bg-yellow-500 hover:bg-yellow-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded" type="button"
                 onClick={()=> updateProducts()}>
                 Actualizar

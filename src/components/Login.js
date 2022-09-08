@@ -20,20 +20,20 @@ const Login = () => {
 
 
     const login = () => {
-        axios.post("http://192.168.0.3:4000/login", user)
+        axios.post("http://192.168.1.175:4000/login", user)
             .then(res => {
                 if (res.data.message === 'Entraste'){
                     alert('Entraste');
                     if (user.email === 'superadmin'){
-                        window.location.href = 'http://192.168.0.3:3000/pos';
+                        window.location.href = 'http://192.168.1.175:3000/pos';
                     }else if (user.email === 'M1'){
-                        window.location.href = 'http://192.168.0.3:3000/waiter/';
+                        window.location.href = 'http://192.168.1.175:3000/waiter/';
                     }else if (user.email === 'M2'){
-                        window.location.href = 'http://192.168.0.3:3000/waiterTwo/';
+                        window.location.href = 'http://192.168.1.175:3000/waiterTwo/';
                     }else if (user.email === 'M3'){
-                        window.location.href = 'http://192.168.0.3:3000/waiterThree/';
+                        window.location.href = 'http://192.168.1.175:3000/waiterThree/';
                     }else if (user.email === 'cocina'){
-                        window.location.href = 'http://192.168.0.3:3000/kitchen';
+                        window.location.href = 'http://192.168.1.175:3000/kitchen';
                     }else{
                         alert('Usuario no válido')
                     }

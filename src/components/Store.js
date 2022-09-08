@@ -8,6 +8,7 @@ const Store = (props) => {
     
     const [category, setCategory] = useState(null);
     const [products, setProducts] = useState(null);
+    const [repeater,setRepeater]=useState(0);
 
     /*Cart Data*/
     const [cart, setCart] = useState('');
@@ -38,33 +39,38 @@ const Store = (props) => {
         props.changePro(false);
     }, [props.updateProduct]);
 
+    useEffect(() => {
+        getProductsData();
+        setTimeout(() => setRepeater(prevState=>prevState+1), 1000);
+    }, [repeater])
+
     /*Get categories*/
     const getCategoriesData = async () => {
-        const c = await axios.get('http://192.168.0.3:4000/api/categories');
+        const c = await axios.get('http://192.168.1.175:4000/api/categories');
         setCategory(c.data);
     }
 
     /*Delete categories*/
     const deleteCategories = async (id) => {
-        await axios.delete('http://192.168.0.3:4000/api/categories/' + id);
+        await axios.delete('http://192.168.1.175:4000/api/categories/' + id);
         getCategoriesData();
     }
 
     /*Get Products*/
     const getProductsData = async () => {
-        const p = await axios.get('http://192.168.0.3:4000/api/products');
+        const p = await axios.get('http://192.168.1.175:4000/api/products');
         setProducts(p.data);
     } 
 
     /*Delete Products*/
     const deleteProducts = async (id) => {
-        await axios.delete('http://192.168.0.3:4000/api/products/' + id);
+        await axios.delete('http://192.168.1.175:4000/api/products/' + id);
         getProductsData();
     }
 
     /*Get Cart*/
     const getCartData = async () => {
-        const a = await axios.get('http://192.168.0.3:4000/api/cart');
+        const a = await axios.get('http://192.168.1.175:4000/api/cart');
         setCart(a.data);
     } 
 
@@ -83,7 +89,7 @@ const Store = (props) => {
         }else{
             /*Repeated Value = Nothing || No Repeated Value = Update */
             if (filteredArray.length===0){
-                axios.post('http://192.168.0.3:4000/api/cart', {
+                axios.post('http://192.168.1.175:4000/api/cart', {
                     _id: id,
                     price: price,
                     product: product, 
@@ -124,7 +130,7 @@ const Store = (props) => {
 
     /*Update Qyt Product*/
      const updateQtyProduct = async (id, finalQtyValue) => {
-        await axios.put('http://192.168.0.3:4000/api/products/' + id, {
+        await axios.put('http://192.168.1.175:4000/api/products/' + id, {
                 quantity: finalQtyValue,
         });
         getProductsData();
@@ -147,7 +153,7 @@ const Store = (props) => {
         <div className='flex h-16'>
             <h2 className='font-bold h-5 w-full font-sans mt-8 ml-4 text-xl'>Categorías</h2>
             <div className='flex-grow px-8 text-lg py-4 relative'>
-                <a href="http://192.168.0.3:3000/pos/createcategory">
+                <a href="http://192.168.1.175:3000/pos/createcategory">
                 <div className='relative left-3 px-2 py-2 w-11 h-auto rounded-full bg-yellow-500 text-white'>
                     <PlusIcon className='pl-1 h-7 w-6 text-white hover:text-black focus:outline-none cursor-pointer'/>
                 </div>
@@ -175,7 +181,7 @@ const Store = (props) => {
                         </button>
                         {c.categoryImage ?
                             <img 
-                                src={'http://192.168.0.3:4000/' + c.categoryImage} 
+                                src={'http://192.168.1.175:4000/' + c.categoryImage} 
                                 alt="" 
                                 className='object-contain h-24 w-48 transition-shadow shadow hover:shadow-lg' 
                                 onClick={() => setCategoryFilter(c.category)}
@@ -201,7 +207,7 @@ const Store = (props) => {
         <div className='flex h-16'>
             <h2 className='font-bold h-5 w-full font-sans mt-8 ml-4 text-xl'>Mis productos</h2>
             <div className='flex-grow px-8 text-lg py-4 relative'>
-                <a href="http://192.168.0.3:3000/pos/createproduct">
+                <a href="http://192.168.1.175:3000/pos/createproduct">
                 <div className='relative left-3 px-2 py-2 w-11 h-auto rounded-full bg-yellow-500 text-white'>
                     <PlusIcon className='pl-1 h-7 w-6 text-white hover:text-black focus:outline-none cursor-pointer'/>
                 </div>
@@ -234,7 +240,7 @@ const Store = (props) => {
                             </button>
                             {p.productsImage ?
                                 <img 
-                                    src={'http://192.168.0.3:4000/' + p.productsImage} 
+                                    src={'http://192.168.1.175:4000/' + p.productsImage} 
                                     alt="" 
                                     className='object-contain h-24 w-48 transition-shadow shadow hover:shadow-lg' 
                                     onClick={()=> {buttonProducts(p._id, p.price, p.product, p.quantity);}}
