@@ -73,12 +73,6 @@ const Kitchen = () => {
                 </tr>
               </tbody>   
           </table>
-          <div className='w-full border-t border-gray-300 my-2'></div>
-          <Link to={"/editkitchen/" + k._id} >
-            <button className='bg-white hover:bg-gray-100 text-gray-800 font-semibold py-1 px-2 border border-gray-400 rounded shadow w-full my-2'>
-                Editar
-            </button>
-          </Link>
         </div>
       </div>)}
       </div>

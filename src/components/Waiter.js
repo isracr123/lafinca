@@ -17,6 +17,7 @@ const Waiter = () => {
     getProductsData();
     getWaiters();
     getPos();
+    getKitchen();
   }, []);
 
   useEffect(() => {
@@ -49,6 +50,10 @@ const Waiter = () => {
 
   /*Products POS*/
   const [pos, setPos] = useState('');
+  
+  /*Get Kitchen*/
+  const [kitchen, setKitchen] = useState([]);
+
  
   /*Get Products*/
   const getProductsData = async () => {
@@ -68,7 +73,13 @@ const Waiter = () => {
     const getPos = async () => {
         const p = await axios.get('http://192.168.1.175:4000/api/products');
         setPos(p.data);
-    } 
+    }
+    
+  /*Get Kitchen*/
+  const getKitchen = async () =>{
+    const k = await axios.get('http://192.168.1.175:4000/api/kitchen');
+    setKitchen(k.data);
+  }
 
   /*Create Waiter data*/
   const createWaiter = () => {
@@ -113,6 +124,7 @@ const Waiter = () => {
             table: table, 
             qty: arrayQty,
             products: arrayProducts,
+            no: 1,
     });
   }
 
@@ -171,8 +183,8 @@ const Waiter = () => {
     });
   }
 
-
   const updateQty = async (id, indexOne, qty, nameProduct, listQty) => {
+
     const qtyUpdate = qty - listQty[indexOne];
     if (qtyUpdate >= 0){
         await axios.put('http://192.168.1.175:4000/api/products/'+ id,{
@@ -304,6 +316,15 @@ const Waiter = () => {
             </div>
         </div>
         </div>
+        {kitchen && kitchen.filter(k=>
+            k.no === number
+        ).map((k,index) =>
+            <Link to={"/editkitchen/" + k._id} key={k._id}>
+                <button className="cursor-pointer block p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                    <h5 className="mb-2 text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Orden: {index + 1}</h5>
+                </button>
+            </Link>
+        )}
     </div>
 </div>
   )

@@ -116,7 +116,7 @@ const KitchenEdit = () => {
 
     /*Close Kitchen*/
     const CloseFunction = () => {
-        window.location.href="http://192.168.1.175:3000/kitchen";
+        window.location.href="http://192.168.1.175:3000/waiter";
     }
 
     /*Delete Products*/
