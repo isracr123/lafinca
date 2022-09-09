@@ -12,6 +12,7 @@ const Waiter = () => {
 
   /*Refresh*/
   const [refresh, setRefresh] = useState(false);
+  const [repeater,setRepeater]=useState(0);
 
   useEffect(() => {
     getProductsData();
@@ -25,6 +26,13 @@ const Waiter = () => {
     getWaiters();
     getPos();
   }, [refresh]);
+
+  useEffect(() => {
+    getWaiters();
+    getPos();
+    getKitchen();
+    setTimeout(() => setRepeater(prevState=>prevState+1), 1000);
+  }, [repeater])
 
   const date = new Date();
 
@@ -124,7 +132,7 @@ const Waiter = () => {
             table: table, 
             qty: arrayQty,
             products: arrayProducts,
-            no: 1,
+            no: number,
     });
   }
 

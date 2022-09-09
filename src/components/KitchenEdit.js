@@ -24,9 +24,10 @@ const KitchenEdit = () => {
     const [qty, setQty] = useState();
     const [price, setPrice] = useState([]);
     const [subtotal, setSubtotal] = useState([]);
+    const [no, setNo] = useState(0);
 
     /*Autocomplete Variables*/
-    const [counter, setCounter] = useState(1);
+    const [counter, setCounter] = useState(0);
     const [autocomplete, setAutocomplete] = useState(false);
     const [value, setValue] = useState('');
 
@@ -50,6 +51,7 @@ const KitchenEdit = () => {
         setProducts(k.data.products);
         setName(k.data.name);
         setTable(k.data.table);
+        setNo(k.data.no);
 
         /*Price and subtotal*/
         const array = new Array(k.data.qty.length).fill(0);
@@ -83,7 +85,7 @@ const KitchenEdit = () => {
             qty: qty,
             products: products          
         });
-        window.location.href = 'http://192.168.1.175:3000/kitchen'
+        CloseFunction();
         alert('Actualizado');
     }
 
@@ -116,7 +118,13 @@ const KitchenEdit = () => {
 
     /*Close Kitchen*/
     const CloseFunction = () => {
-        window.location.href="http://192.168.1.175:3000/waiter";
+        if (no === 1){
+            window.location.href="http://192.168.1.175:3000/waiter";
+        }else if (no === 2){
+            window.location.href="http://192.168.1.175:3000/waiterTwo";
+        }else if (no === 3){
+            window.location.href="http://192.168.1.175:3000/waiterThree";
+        }
     }
 
     /*Delete Products*/
@@ -134,22 +142,6 @@ const KitchenEdit = () => {
 
         }
     }
-
-    /*Sum Autocomplete*/
-  const sumAutocomplete = () => {
-    if (counter >= 0) {
-        setCounter(counter+1);
-    }else{
-    }
-  }
-
-  /*Rest Autocomplete*/
-  const restAutocomplete = () => {
-    if (counter > 0) {
-        setCounter(counter-1);
-    }else{
-    }
-  }
 
   /*Add products to Kitchen*/
   const addKitchen = () => {
@@ -237,19 +229,11 @@ const KitchenEdit = () => {
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-center flex-col'>
-                                                <div className='space-y-10'>
-                                                    <button className="absolute left-4 md:left-[200px] lg:left-[510px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                    onClick={() => {sumAutocomplete()}}>
-                                                        <PlusIcon className="h-2 w-2 text-white"/>
-                                                    </button>
-                                                    <button className="absolute  left-4 md:left-[200px] lg:left-[510px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                    onClick={() => {restAutocomplete()}}>
-                                                        <MinusIcon className="h-2 w-2 text-white"/>
-                                                    </button>
-                                                </div>
-                                                <p className='w-5 border-2 border-black'>
-                                                    {counter}
-                                                </p>
+                                                <input 
+                                                    className='w-7 border-2 border-black text-center'
+                                                    defaultValue={counter} 
+                                                    onChange={e => setCounter(e.target.value)}
+                                                />
                                             </td>
                                         </tr>
                                     </tbody>

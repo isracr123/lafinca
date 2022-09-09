@@ -1,7 +1,7 @@
 import React from 'react'
 import Moment from 'react-moment'
 import {useState, useEffect} from 'react'
-import { PlusIcon, MinusIcon } from '@heroicons/react/solid'
+import { PlusIcon } from '@heroicons/react/solid'
 import axios from 'axios'
 import Autocomplete from 'react-autocomplete';
 import {Link} from 'react-router-dom';
@@ -10,10 +10,29 @@ console.warn = () => {}
 
 const WaiterTwo = () => {
 
+  /*Refresh*/
+  const [refresh, setRefresh] = useState(false);
+  const [repeater,setRepeater]=useState(0);
+
   useEffect(() => {
     getProductsData();
     getWaiters();
+    getPos();
+    getKitchen();
   }, []);
+
+  useEffect(() => {
+    setRefresh(false);
+    getWaiters();
+    getPos();
+  }, [refresh]);
+
+  useEffect(() => {
+    getWaiters();
+    getPos();
+    getKitchen();
+    setTimeout(() => setRepeater(prevState=>prevState+1), 1000);
+  }, [repeater])
 
   const date = new Date();
 
@@ -22,6 +41,7 @@ const WaiterTwo = () => {
   const [table, setTable] = useState(1);
   const [qty, setQty] = useState(1);
   const [products, setProducts] = useState('');
+  const number = 2;
 
   /* Create Kitchen Variables*/
   const [arrayProducts, setArrayProducts] = useState('');
@@ -35,6 +55,13 @@ const WaiterTwo = () => {
 
   /*Inicio*/
   const [start, setStart] = useState(false);
+
+  /*Products POS*/
+  const [pos, setPos] = useState('');
+  
+  /*Get Kitchen*/
+  const [kitchen, setKitchen] = useState([]);
+
  
   /*Get Products*/
   const getProductsData = async () => {
@@ -46,22 +73,20 @@ const WaiterTwo = () => {
   const getWaiters = async () => {
     const w = await axios.get('http://192.168.1.175:4000/api/waiterTwo');
     setWaiter(w.data);
+    setArrayProducts(w.data.map(w => w.products));
+    setArrayQty(w.data.map(w => w.qty));
   } 
 
-  /*Sum products*/
-  const sumProducts = () => {
-    if (qty >= 0) {
-        setQty(qty+1);
-    }else{
+   /*Get Pos*/
+    const getPos = async () => {
+        const p = await axios.get('http://192.168.1.175:4000/api/products');
+        setPos(p.data);
     }
-  }
-
-  /*Rest Products*/
-  const restProducts = () => {
-    if (qty > 0) {
-        setQty(qty-1);
-    }else{
-    }
+    
+  /*Get Kitchen*/
+  const getKitchen = async () =>{
+    const k = await axios.get('http://192.168.1.175:4000/api/kitchen');
+    setKitchen(k.data);
   }
 
   /*Create Waiter data*/
@@ -70,7 +95,7 @@ const WaiterTwo = () => {
                 qty: qty,
                 products: value
     });
-    getWaiters();
+    setRefresh(true);
   }
   
   /*Plus button Functionality*/
@@ -82,30 +107,33 @@ const WaiterTwo = () => {
     }
   }
 
-  /*Kitchen Data*/
-  const kitchenData = () => {
-    const products = waiter.map (w => w.products);
-    const qty = waiter.map (w => w.qty);
-    setArrayProducts(products);
-    setArrayQty(qty);
-  }
-
   /*Create Kitchen Data*/
   const createKitchen = () => {
-    if (arrayProducts === ''){
-        console.log(arrayProducts);
-        console.log(arrayQty);
-        kitchenData();
-    }else{
-        axios.post('http://192.168.1.175:4000/api/kitchen', {
-        date: date,
-        waiter: name,
-        table: table, 
-        qty: arrayQty,
-        products: arrayProducts,
-        });
+    getPos();
+    if (arrayProducts.length === 0 ){
+        getWaiters();
+    }else if (arrayProducts.length > 0){
+        repeatedValue();
+        postKitchen();
         alert('Enviado');
+        functionsDeleteAndRefresh();
     }
+  }
+
+  const functionsDeleteAndRefresh = () => {
+    deleteAllWaiter();
+    getWaiters();
+  }
+
+  const postKitchen = () => {
+    axios.post('http://192.168.1.175:4000/api/kitchen', {
+            date: date,
+            waiter: name,
+            table: table, 
+            qty: arrayQty,
+            products: arrayProducts,
+            no: number,
+    });
   }
 
   /*Delete All Waiter | Borrado completo de mesero*/
@@ -115,9 +143,64 @@ const WaiterTwo = () => {
 
   /*Functions when we send it "Enviar" button | Borrado completo de mesero*/
   const SendFunctions = () => {
-    deleteAllWaiter();
     createKitchen();
-    getWaiters();
+    window.location.href = "http://192.168.1.175:3000/waiterTwo";
+  }
+
+  /*Update Qty in pos*/
+  const repeatedValue = () => {
+    const arr1 = arrayProducts;
+    const arr2 = arrayQty;
+
+    const obj = {};
+
+    arr1.forEach((element, index) => {
+        
+        if (obj[element]){
+            obj[element] = Number(obj[element]) + Number(arr2[index]);
+        }else{
+            obj[element] = Number(arr2[index]);
+        }
+    });
+
+    let newArrayProducts = arrayProducts.filter((nameProduct, index) => {
+        return arrayProducts.indexOf(nameProduct) === index;
+    });
+
+    const listQty = {};
+
+    newArrayProducts.forEach((element, index) => {
+        listQty[index] = obj[element];
+    });
+
+    findProducts(newArrayProducts, listQty);
+  }
+
+  const findProducts = (newArrayProducts, listQty) => {
+    const posData = pos.map( p => p.product );
+    newArrayProducts.forEach((nameProduct, indexOne) => {
+        posData.forEach((namePos, indexTwo) => {
+            if (nameProduct === namePos){
+                const id = pos[indexTwo]._id;
+                const qty = pos[indexTwo].quantity;
+                return updateQty(id, indexOne, qty, nameProduct, listQty);
+            }else if (nameProduct !== namePos){
+                return console.log('false')
+            }
+        });
+    });
+  }
+
+  const updateQty = async (id, indexOne, qty, nameProduct, listQty) => {
+
+    const qtyUpdate = qty - listQty[indexOne];
+    if (qtyUpdate >= 0){
+        await axios.put('http://192.168.1.175:4000/api/products/'+ id,{
+        quantity: qtyUpdate,
+        });
+    }else if (qtyUpdate < 0){
+        alert('No hay suficiente producto de: ' + nameProduct);
+    }
   }
 
   return (
@@ -132,7 +215,7 @@ const WaiterTwo = () => {
             </div>
             <div className='flex mt-4 text-xs'>
                 <div className='flex-grow'>
-                    No: 121232
+                    No: {number}
                 </div>
                 <div>
                     <Moment format='MMMM Do YYYY, h:mm:ss a'>{date}</Moment>
@@ -160,7 +243,7 @@ const WaiterTwo = () => {
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-center flex-col'>
-                                                <p className='w-5 border-2 border-black'>
+                                                <p className='w-6 border-2 border-black'>
                                                     {w.qty}
                                                 </p>
                                             </td>
@@ -173,7 +256,7 @@ const WaiterTwo = () => {
                                     <tbody>
                                         <tr className='overflow-visible	w-1'>
                                             <td className='py-1 text-left'>
-                                                <Link to={"/editwaitertwo/" + w._id}>
+                                                <Link to={"/editwaiterTwo/" + w._id}>
                                                     <p>{w.products}</p>
                                                 </Link>
                                             </td>
@@ -188,19 +271,7 @@ const WaiterTwo = () => {
                                     <tbody>
                                         <tr>
                                             <td className='py-1 text-center flex-col'>
-                                                <div className='space-y-10'>
-                                                    <button className="absolute left-4 md:left-[200px] lg:left-[510px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                    onClick={() => {sumProducts()}}>
-                                                        <PlusIcon className="h-2 w-2 text-white"/>
-                                                    </button>
-                                                    <button className="absolute left-4 md:left-[200px] lg:left-[510px] bg-yellow-500 text-white active:bg-yellow-600 font-bold uppercase text-xs px-2 py-2 rounded-full shadow hover:shadow-md outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
-                                                    onClick={() => {restProducts()}}>
-                                                        <MinusIcon className="h-2 w-2 text-white"/>
-                                                    </button>
-                                                </div>
-                                                <p className='w-5 border-2 border-black'>
-                                                    {qty}
-                                                </p>
+                                                <input className='w-6 border-2 border-black' defaultValue={qty} onChange={e => setQty(e.target.value)}/>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -253,6 +324,15 @@ const WaiterTwo = () => {
             </div>
         </div>
         </div>
+        {kitchen && kitchen.filter(k=>
+            k.no === number
+        ).map((k,index) =>
+            <Link to={"/editkitchen/" + k._id} key={k._id}>
+                <button className="cursor-pointer block p-6 w-full bg-white rounded-lg border border-gray-200 shadow-md hover:bg-gray-100 dark:bg-gray-800 dark:border-gray-700 dark:hover:bg-gray-700">
+                    <h5 className="mb-2 text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Orden: {index + 1}</h5>
+                </button>
+            </Link>
+        )}
     </div>
 </div>
   )
