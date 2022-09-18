@@ -9,10 +9,18 @@ import Autocomplete from 'react-autocomplete';
 
 const KitchenEdit = () => {
 
+    const [repeater,setRepeater]=useState(0);
+
     useEffect(() => {
         getKitchen();
         AutocompleteData();
+        getPos();
     }, []);
+
+    useEffect(() => {
+        getPos();
+        setTimeout(() => setRepeater(prevState=>prevState+1), 1000);
+      }, [repeater])
 
 
     const [oneKitchen, setOneKitchen] = useState(['']);
@@ -25,6 +33,7 @@ const KitchenEdit = () => {
     const [price, setPrice] = useState([]);
     const [subtotal, setSubtotal] = useState([]);
     const [no, setNo] = useState(0);
+    const [oneListQty, setOneListQty] = useState('');
 
     /*Autocomplete Variables*/
     const [counter, setCounter] = useState(0);
@@ -34,25 +43,28 @@ const KitchenEdit = () => {
     /*Inicio*/
     const [start, setStart] = useState(false);
 
+    /*Products POS*/
+    const [pos, setPos] = useState('');
+
     const { id } = useParams();
     const newid = {id};
 
     /*Get Autocomplete Data*/
     const AutocompleteData = async () => {
-        const p = await axios.get('http://192.168.1.175:4000/api/products');
+        const p = await axios.get('http://192.168.0.10:4000/api/products');
         setAutocomplete(p.data);
     } 
 
     /*Get One Ticket*/
     const getKitchen = async () => {
-        const k = await axios.get('http://192.168.1.175:4000/api/kitchen/' + newid.id);
+        const k = await axios.get('http://192.168.0.10:4000/api/kitchen/' + newid.id);
         setOneKitchen(k.data);
         setQty(k.data.qty);
         setProducts(k.data.products);
         setName(k.data.name);
         setTable(k.data.table);
         setNo(k.data.no);
-
+        repeatedValueFirst(k.data.products, k.data.qty)
         /*Price and subtotal*/
         const array = new Array(k.data.qty.length).fill(0);
         setPrice(array);
@@ -79,29 +91,134 @@ const KitchenEdit = () => {
 
     /*Update kitchen with URL*/
     const updateKitchen = async () => {
-        await axios.put('http://192.168.1.175:4000/api/kitchen/'+ newid.id,{
+        await axios.put('http://192.168.0.10:4000/api/kitchen/'+ newid.id,{
             waiter: name,
             table: table,
             qty: qty,
             products: products          
         });
+        repeatedValue();
         CloseFunction();
         alert('Actualizado');
     }
 
     const updateWithoutAlerts = async () => {
-        await axios.put('http://192.168.1.175:4000/api/kitchen/'+ newid.id,{
+        await axios.put('http://192.168.0.10:4000/api/kitchen/'+ newid.id,{
             waiter: name,
             table: table,
             qty: qty,
             products: products          
         });
-        window.location.href = 'http://192.168.1.175:3000/editkitchen/' + newid.id ;
+        repeatedValue();
+        window.location.href = 'http://192.168.0.10:3000/editkitchen/' + newid.id ;
     }
+
+    /*Get Pos*/
+    const getPos = async () => {
+        const p = await axios.get('http://192.168.0.10:4000/api/products');
+        setPos(p.data);
+    }
+
+    /*Update Qty in pos*/
+  const repeatedValue = () => {
+    const arr1 = products;
+    const arr2 = qty;
+
+    const obj = {};
+
+    arr1.forEach((element, index) => {
+        
+        if (obj[element]){
+            obj[element] = Number(obj[element]) + Number(arr2[index]);
+        }else{
+            obj[element] = Number(arr2[index]);
+        }
+    });
+
+    let newArrayProducts = products.filter((nameProduct, index) => {
+        return products.indexOf(nameProduct) === index;
+    });
+
+    const listQty = {};
+
+    newArrayProducts.forEach((element, index) => {
+        listQty[index] = obj[element];
+    });
+
+    findProducts(newArrayProducts, listQty);
+  }
+
+  const findProducts = (newArrayProducts, listQty) => {
+    const posData = pos.map( p => p.product );
+    newArrayProducts.forEach((nameProduct, indexOne) => {
+        posData.forEach((namePos, indexTwo) => {
+            if (nameProduct === namePos){
+                const id = pos[indexTwo]._id;
+                const qty = pos[indexTwo].quantity;
+                return updateQty(id, indexOne, qty, nameProduct, listQty);
+            }else if (nameProduct !== namePos){
+                return console.log('false')
+            }
+        });
+    });
+  }
+
+  const updateQty = async (id, indexOne, qty, nameProduct, listQty) => {
+    /*Si son iuales entonces que no haga nada si son diferentes que haga la operación*/
+    
+    const allLength = Object.keys(listQty).length;
+    console.log(allLength);
+    for (let i =0; i<allLength; i++){
+        if (oneListQty[i] === listQty[i]){
+            console.log('nada');
+        }else if (oneListQty[i] !== listQty[i]){
+            const diff = listQty[i] - oneListQty[i];
+            const qtyUpdate = qty - diff;
+            if (qtyUpdate >= 0){
+                await axios.put('http://192.168.0.10:4000/api/products/'+ id,{
+                quantity: qtyUpdate,
+                });
+            }else if (qtyUpdate < 0){
+                alert('Quedan: ' + qty + ' de '  + nameProduct);
+            }
+        }
+    }
+
+  }
+
+  /*First Update Qty in pos*/
+  const repeatedValueFirst = (p, q) => {
+    const arr1 = p;
+    const arr2 = q;
+
+    const obj = {};
+
+    arr1.forEach((element, index) => {
+        
+        if (obj[element]){
+            obj[element] = Number(obj[element]) + Number(arr2[index]);
+        }else{
+            obj[element] = Number(arr2[index]);
+        }
+    });
+
+    let newArrayProducts = arr1.filter((nameProduct, index) => {
+        return arr1.indexOf(nameProduct) === index;
+    });
+
+    const listQty = {};
+
+    newArrayProducts.forEach((element, index) => {
+        listQty[index] = obj[element];
+    });
+
+    setOneListQty(listQty);
+    console.log(listQty);
+  }
 
     /*Create tickets*/
     const createTickets = async () => {
-        await axios.post('http://192.168.1.175:4000/api/tickets', {
+        await axios.post('http://192.168.0.10:4000/api/tickets', {
             waiter: name,
             table: table,
             qty: qty,
@@ -112,24 +229,24 @@ const KitchenEdit = () => {
             pay: 0,
             change: 0,                 
         });
-        window.location.href='http://192.168.1.175:3000/kitchen';
+        CloseFunction();
         deleteOneKitchen();
     }
 
     /*Close Kitchen*/
     const CloseFunction = () => {
         if (no === 1){
-            window.location.href="http://192.168.1.175:3000/waiter";
+            window.location.href="http://192.168.0.10:3000/waiter";
         }else if (no === 2){
-            window.location.href="http://192.168.1.175:3000/waiterTwo";
+            window.location.href="http://192.168.0.10:3000/waiterTwo";
         }else if (no === 3){
-            window.location.href="http://192.168.1.175:3000/waiterThree";
+            window.location.href="http://192.168.0.10:3000/waiterThree";
         }
     }
 
     /*Delete Products*/
     const deleteOneKitchen = async () => {
-        await axios.delete('http://192.168.1.175:4000/api/kitchen/' + newid.id);
+        await axios.delete('http://192.168.0.10:4000/api/kitchen/' + newid.id);
     }
     
     /*Plus button Functionality*/
@@ -158,6 +275,11 @@ const KitchenEdit = () => {
   const TrashFunction = (key) => {
     deleteKitchen(key);
     updateWithoutAlerts();
+  }
+
+  const closeButton = () => {
+    repeatedValue();
+    CloseFunction();
   }
 
   return (
@@ -282,14 +404,17 @@ const KitchenEdit = () => {
         </div>
         <div className='p-4 w-full space-y-2'>
             <button className='bg-yellow-500 text-blacks text-base px-4 py-3 rounded-2xl w-full focus:outline-none'
-            onClick={CloseFunction}>
+            onClick={closeButton}>
                 Cerrar
             </button>
             <button className='bg-yellow-500 text-white text-base px-4 py-3 rounded-2xl w-full focus:outline-none'
             onClick={updateKitchen}>
                 Actualizar
             </button>
-            <button className='bg-green-500 text-white text-base px-4 py-3 rounded-2xl w-full focus:outline-none' onClick={createTickets}>
+            <button 
+                className='bg-green-500 text-white text-base px-4 py-3 rounded-2xl w-full focus:outline-none' 
+                onClick={createTickets}
+            >
                 ENVIAR
             </button>
         </div>

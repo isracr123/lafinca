@@ -65,13 +65,13 @@ const WaiterThree = () => {
  
   /*Get Products*/
   const getProductsData = async () => {
-    const p = await axios.get('http://192.168.1.175:4000/api/products');
+    const p = await axios.get('http://192.168.0.10:4000/api/products');
     setProducts(p.data);
   } 
 
   /*Get Waiters*/
   const getWaiters = async () => {
-    const w = await axios.get('http://192.168.1.175:4000/api/waiterThree');
+    const w = await axios.get('http://192.168.0.10:4000/api/waiterThree');
     setWaiter(w.data);
     setArrayProducts(w.data.map(w => w.products));
     setArrayQty(w.data.map(w => w.qty));
@@ -79,19 +79,19 @@ const WaiterThree = () => {
 
    /*Get Pos*/
     const getPos = async () => {
-        const p = await axios.get('http://192.168.1.175:4000/api/products');
+        const p = await axios.get('http://192.168.0.10:4000/api/products');
         setPos(p.data);
     }
     
   /*Get Kitchen*/
   const getKitchen = async () =>{
-    const k = await axios.get('http://192.168.1.175:4000/api/kitchen');
+    const k = await axios.get('http://192.168.0.10:4000/api/kitchen');
     setKitchen(k.data);
   }
 
   /*Create Waiter data*/
   const createWaiter = () => {
-    axios.post('http://192.168.1.175:4000/api/waiterThree', {
+    axios.post('http://192.168.0.10:4000/api/waiterThree', {
                 qty: qty,
                 products: value
     });
@@ -126,7 +126,7 @@ const WaiterThree = () => {
   }
 
   const postKitchen = () => {
-    axios.post('http://192.168.1.175:4000/api/kitchen', {
+    axios.post('http://192.168.0.10:4000/api/kitchen', {
             date: date,
             waiter: name,
             table: table, 
@@ -138,13 +138,13 @@ const WaiterThree = () => {
 
   /*Delete All Waiter | Borrado completo de mesero*/
   const deleteAllWaiter = async () => {
-    await axios.delete('http://192.168.1.175:4000/api/waiterThree');
+    await axios.delete('http://192.168.0.10:4000/api/waiterThree');
   }
 
   /*Functions when we send it "Enviar" button | Borrado completo de mesero*/
   const SendFunctions = () => {
     createKitchen();
-    window.location.href = "http://192.168.1.175:3000/waiterThree";
+    window.location.href = "http://192.168.0.10:3000/waiterThree";
   }
 
   /*Update Qty in pos*/
@@ -195,7 +195,7 @@ const WaiterThree = () => {
 
     const qtyUpdate = qty - listQty[indexOne];
     if (qtyUpdate >= 0){
-        await axios.put('http://192.168.1.175:4000/api/products/'+ id,{
+        await axios.put('http://192.168.0.10:4000/api/products/'+ id,{
         quantity: qtyUpdate,
         });
     }else if (qtyUpdate < 0){
