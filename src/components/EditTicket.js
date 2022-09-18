@@ -18,9 +18,11 @@ const EditTicket = () => {
     const [products, setProducts] = useState(oneTicket.products);
     const [price, setPrice] = useState(oneTicket.price);
     const [subtotal, setSubtotal] = useState(oneTicket.subtotal);
-    const [total, setTotal] = useState(oneTicket.total);
+    const [total, setTotal] = useState(0);
     const [pay, setPay] = useState(oneTicket.pay);
     const [change, setChange] = useState(oneTicket.change);
+    /* Products from admin*/
+    const [categoryProducts, setCategoryProducts] = useState();
 
     /*Print */
     const componentRef = useRef();
@@ -31,6 +33,7 @@ const EditTicket = () => {
 
     useEffect(() => {
         getTickets();
+        getProductsData();
     }, []);
 
     const { id } = useParams();
@@ -41,6 +44,12 @@ const EditTicket = () => {
         const t = await axios.get('http://192.168.0.10:4000/api/tickets/' + newid.id);
         setOneTicket(t.data);
     }
+
+    /*Get Products*/
+    const getProductsData = async () => {
+        const p = await axios.get('http://192.168.0.10:4000/api/products');
+        setCategoryProducts(p.data);
+    } 
 
     /*Qyt array*/
     const qtyArray = (key, event) => {
@@ -69,7 +78,7 @@ const EditTicket = () => {
         setPrice(priceArray);
     }
 
-    /*Price array*/
+    /*Subtotal array*/
     const subtotalArray = (key, event) => {
         const subtotalArray = oneTicket.subtotal;
         oneTicket.subtotal.forEach(() => {
@@ -79,8 +88,36 @@ const EditTicket = () => {
     }
 
     /*Update tickets*/
-    const updateTickets = async () => {
-        await axios.put('http://192.168.0.10:4000/api/tickets/' + newid.id, {
+    const updateTickets = async (value, Arrays) => {
+        
+        if (value === 1){
+            await axios.put('http://192.168.0.10:4000/api/tickets/' + newid.id, {
+            waiter: name,
+            table: table,
+            qty: qty,
+            products: products,
+            price: price,
+            subtotal: Arrays,
+            total: total,
+            pay: pay,
+            change: change,                
+            });
+            window.location.href='http://192.168.0.10:3000/pos/edittickets/' + newid.id;
+        }else if (value === 2){
+            await axios.put('http://192.168.0.10:4000/api/tickets/' + newid.id, {
+            waiter: name,
+            table: table,
+            qty: qty,
+            products: products,
+            price: Arrays,
+            subtotal: subtotal,
+            total: total,
+            pay: pay,
+            change: change,                
+            });
+            window.location.href='http://192.168.0.10:3000/pos/edittickets/' + newid.id;
+        }else{
+            await axios.put('http://192.168.0.10:4000/api/tickets/' + newid.id, {
             waiter: name,
             table: table,
             qty: qty,
@@ -90,8 +127,9 @@ const EditTicket = () => {
             total: total,
             pay: pay,
             change: change,                
-        });
-        window.location.href='http://192.168.0.10:3000/pos/tickets';
+            });
+            window.location.href='http://192.168.0.10:3000/pos/tickets';
+        }
     }
 
     /*Delete Ticket | Boton eliminar en tickets*/
@@ -102,7 +140,56 @@ const EditTicket = () => {
 
     /*Subtotal operation*/
     const subtotalFunction = () => {
-        
+        console.log(oneTicket.qty);
+        console.log(oneTicket.price);
+        console.log(oneTicket.subtotal);
+        const subtotalArray = oneTicket.subtotal;
+        oneTicket.subtotal.forEach((value, key) => {
+            subtotalArray[key] = oneTicket.qty[key] * oneTicket.price[key];
+        });
+        updateTickets(1, subtotalArray);
+    }
+
+    /*Price operation*/
+    const priceFunction = () => {
+        if (categoryProducts === null){
+            console.log('sin productos');
+        }else{
+            console.log(oneTicket.price);
+            const newPrice = oneTicket.price;
+            oneTicket.products.forEach((value1, key1) => {
+                categoryProducts.forEach((value2, key2) => {
+                    if (value1.toLowerCase() === value2.product.toLowerCase()){
+                        newPrice[key1] = value2.price;
+                    }else if (value1.toLowerCase() !== value2.product.toLowerCase()){
+                        console.log('No es igual');
+                    }else{
+                        console.log('error');
+                    }
+                });
+            });
+           updateTickets(2, newPrice);
+        }
+    }
+
+    /*Total operation*/
+    const totalFunction = () => {
+        let newTotal = 0;
+        oneTicket.subtotal.forEach((value, key) => {
+            newTotal = Number(newTotal) + Number(value);
+        });
+        setTotal(newTotal);
+    }
+
+    /*Change operation*/
+    const changeFunction = () => {
+
+        const change = total - (pay || oneTicket.pay);
+        if (change <= 0){
+            setChange(0);
+        }else {
+            setChange(Number(change));
+        }
     }
 
   return (
@@ -136,10 +223,16 @@ const EditTicket = () => {
                             <tr>
                                 <th className='py-1 w-1/12 text-center'>#</th>
                                 <th className='py-1 text-left'>Producto</th>
-                                <th className='py-1 w-2/12 text-center'>Precio</th>
+                                <th className='py-1 w-2/12 text-center'>
+                                    <button 
+                                        className='font-bold text-yellow-600'
+                                        onClick={priceFunction}>
+                                        Precio
+                                    </button>
+                                </th>
                                 <th className='py-1 w-2/12 text-right'>
                                     <button 
-                                        className='font-bold'
+                                        className='font-bold text-yellow-600'
                                         onClick={subtotalFunction}>
                                         Subtotal
                                     </button>
@@ -209,10 +302,17 @@ const EditTicket = () => {
                 <div className='w-full border-t border-gray-300 my-2'></div>
                 <div>
                 <div className='flex font-semibold'>
-                    <div className='flex-grow'>TOTAL</div>
+                    <div className='flex-grow'>
+                        <button 
+                            className='font-bold text-yellow-600'
+                            onClick={totalFunction}
+                        >
+                            Total
+                        </button>
+                    </div>
                     <div className='grid grid-cols-2'>
                         <p className='px-5'>$</p>
-                        <input className='w-12' onChange={event => setTotal(event.target.value)} defaultValue={oneTicket.total}/>
+                        <input className='w-12' onChange={event => setTotal(event.target.value)} value={total}/>
                     </div>
                 </div>
                 <div className='flex text-xs font-semibold'>
@@ -224,10 +324,17 @@ const EditTicket = () => {
                 </div>
                 <div className='w-full border-t border-gray-300 my-2'></div>
                 <div className='flex text-xs font-semibold'>
-                    <div className='flex-grow'>Cambio</div>
+                    <div className='flex-grow'>
+                        <button 
+                            className='font-bold text-yellow-600'
+                            onClick={changeFunction}
+                        >
+                            Cambio
+                        </button>
+                    </div>
                     <div className='grid grid-cols-2'>
                         <p className='px-5'>$</p>
-                        <input className='w-12' onChange={event => setChange(event.target.value)} defaultValue={oneTicket.change}/>
+                        <input className='w-12' onChange={event => setChange(event.target.value)} defaultValue={change}/>
                     </div>
                 </div>
                 </div>
