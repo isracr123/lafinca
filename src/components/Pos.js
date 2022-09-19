@@ -28,12 +28,12 @@ const Pos = () => {
               updateProduct={updateProduct}
               changePro={updateProduct => setUpdateProduct(updateProduct)}/>          
             </div>
-            <RightSide refresh={refresh} changeRefresh={refresh => setRefresh(refresh)} changeIdQty={idValueQty => setIdValueQty(idValueQty)}
+            {/* <RightSide refresh={refresh} changeRefresh={refresh => setRefresh(refresh)} changeIdQty={idValueQty => setIdValueQty(idValueQty)}
             changeSumValue={sumValue => setSumValue(sumValue)}
             changeRefreshQty={refreshQty => setRefreshQty(refreshQty)}
             changeQty={valueQty => setValueQty(valueQty)}
             stopSum={stopSum}
-            changePro={updateProduct => setUpdateProduct(updateProduct)}/>
+            changePro={updateProduct => setUpdateProduct(updateProduct)}/> */}
           </div>
       </div>
   )

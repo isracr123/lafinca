@@ -162,7 +162,7 @@ const Store = (props) => {
         </div>
         <div className='h-auto overflow-hidden mt-4'>
             <div className='h-auto overflow-y-auto px-2'>
-                <div className='grid grid-cols-2 md:grid-cols-4 gap-4 pb-3'>{/* CSS Categories Copy*/}
+                <div className='grid grid-cols-2 md:grid-cols-8 gap-4 pb-3'>{/* CSS Categories Copy*/}
                     {/* All Categories Button*/}
                     <div className='select-none cursor-pointer overflow-hidden rounded-2xl bg-white' >
                         <div className='px-2 py-7 text-right relative' onClick={() => setCategoryFilter('')}>
@@ -216,7 +216,7 @@ const Store = (props) => {
         </div>
         <div className='h-auto overflow-hidden mt-4'>
             <div className='h-auto overflow-y-auto px-2 '>
-                <div className=' grid grid-cols-2 md:grid-cols-4 gap-4 pb-3'>{/* CSS Products Copy*/}
+                <div className=' grid grid-cols-2 md:grid-cols-8 gap-4 pb-3'>{/* CSS Products Copy*/}
                 {/* Filter Products Mapping*/}  
                 {products && products.filter((p)=>{
                     if (categoryFilter==="" && searchBarFilter!==""){

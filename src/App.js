@@ -16,12 +16,16 @@ import WaiterTwo from './components/WaiterTwo';
 import WaiterTwoEdit from './components/WaiterTwoEdit';
 import WaiterThree from './components/WaiterThree';
 import WaiterThreeEdit from './components/WaiterThreeEdit';
+import WaiterPOS from './components/WaiterPOS';
+import WaiterAdminEdit from './components/WaiterAdminEdit';
 import SignUp from './components/SignUp';
 import PrivateRoutes from './utils/PrivateRoutes'
 import PrivateRoutesTwo from './utils/PrivateRoutesTwo';
 import PrivateRoutesThree from './utils/PrivateRoutesThree';
 import PrivateRoutesFour from './utils/PrivateRoutesFour';
+import PrivateRoutesAdmin from './utils/PrivateRoutesAdmin';
 import PrivateRoutesKitchen from './utils/PrivateRoutesKitchen';
+
 
 import {
   BrowserRouter,
@@ -62,6 +66,11 @@ function App() {
           <Route path="/waiterThree" element={<WaiterThree />}/>
         </Route>
         <Route path="/editwaiterthree/:id" element={<WaiterThreeEdit />}/>
+        {/* Waiter Admin */}
+        <Route element={<PrivateRoutesAdmin />}>
+          <Route path="/pos/waiterAdmin" element={<WaiterPOS />}/>
+        </Route>
+        <Route path="/editwaiterAdmin/:id" element={<WaiterAdminEdit />}/>
         {/* Kitchen */}
         <Route element={<PrivateRoutesKitchen />}>
           <Route path="/kitchen" element={<Kitchen />}/>

@@ -157,7 +157,7 @@ const KitchenEdit = () => {
                 const qty = pos[indexTwo].quantity;
                 return updateQty(id, indexOne, qty, nameProduct, listQty);
             }else if (nameProduct !== namePos){
-                return console.log('false')
+                return console.log('false');
             }
         });
     });
@@ -166,24 +166,18 @@ const KitchenEdit = () => {
   const updateQty = async (id, indexOne, qty, nameProduct, listQty) => {
     /*Si son iuales entonces que no haga nada si son diferentes que haga la operación*/
     
-    const allLength = Object.keys(listQty).length;
-    console.log(allLength);
-    for (let i =0; i<allLength; i++){
-        if (oneListQty[i] === listQty[i]){
-            console.log('nada');
-        }else if (oneListQty[i] !== listQty[i]){
-            const diff = listQty[i] - oneListQty[i];
-            const qtyUpdate = qty - diff;
-            if (qtyUpdate >= 0){
-                await axios.put('http://192.168.0.10:4000/api/products/'+ id,{
-                quantity: qtyUpdate,
-                });
-            }else if (qtyUpdate < 0){
-                alert('Quedan: ' + qty + ' de '  + nameProduct);
-            }
-        }
-    }
+    let diff = oneListQty[indexOne] - listQty[indexOne];
+    let qtyUpdate = qty + diff;
 
+    if (qtyUpdate >= 0 && diff !== 0){
+        await axios.put('http://192.168.0.10:4000/api/products/'+ id,{
+        quantity: qtyUpdate,
+        });
+    }else if (qtyUpdate < 0){
+        alert('Quedan: ' + qty + ' de '  + nameProduct);
+
+    }
+    
   }
 
   /*First Update Qty in pos*/
@@ -213,7 +207,6 @@ const KitchenEdit = () => {
     });
 
     setOneListQty(listQty);
-    console.log(listQty);
   }
 
     /*Create tickets*/
@@ -241,6 +234,8 @@ const KitchenEdit = () => {
             window.location.href="http://192.168.0.10:3000/waiterTwo";
         }else if (no === 3){
             window.location.href="http://192.168.0.10:3000/waiterThree";
+        }else if (no === 4){
+            window.location.href="http://192.168.0.10:3000/pos/waiterAdmin";
         }
     }
 
@@ -337,7 +332,7 @@ const KitchenEdit = () => {
                                     <tbody>
                                         {oneKitchen.products && oneKitchen.products.length ? oneKitchen.products.map((b, key)=>
                                         <tr key={key}>
-                                            <td className='py-1 text-left'>
+                                            <td className='py-[4.6px] text-left'>
                                                 <input className='w-13' onChange={event => productsArray(key, event)} defaultValue={b}/>
                                             </td>
                                         </tr>) : null}
