@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/lafinca/static/css/main.eeb730ba.css",
+    "main.js": "/lafinca/static/js/main.e1d5a82b.js",
+    "index.html": "/lafinca/index.html",
+    "main.eeb730ba.css.map": "/lafinca/static/css/main.eeb730ba.css.map",
+    "main.e1d5a82b.js.map": "/lafinca/static/js/main.e1d5a82b.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.eeb730ba.css",
+    "static/js/main.e1d5a82b.js"
+  ]
+}
